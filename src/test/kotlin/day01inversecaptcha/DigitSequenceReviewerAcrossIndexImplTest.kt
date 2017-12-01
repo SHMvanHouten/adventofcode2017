@@ -38,7 +38,7 @@ class DigitSequenceReviewerAcrossIndexImplTest {
     fun `it should solve the challenge input`() {
         val reviewer = DigitSequenceReviewerAcrossIndexImpl()
 
-        assertThat(reviewer.createSumOfRepeatedDigits(day1ChallengeInput), equalTo(1171))
+        assertThat(reviewer.createSumOfRepeatedDigits(day1ChallengeInput), equalTo(1024))
     }
 
 }
