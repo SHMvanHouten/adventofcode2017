@@ -8,37 +8,37 @@ class DigitSequenceReviewerTest {
 
     @Test
     fun `it should review the sequence 1122 to produce a sum of 3`() {
-        val reviewer = DigitSequenceReviewer()
+        val reviewer = DigitSequenceReviewerNextIndexImpl()
 
         assertThat(reviewer.createSumOfRepeatedDigits("1122"), equalTo(3))
     }
 
     @Test
     fun `it should review the sequence 1234 to produce a sum of 0`() {
-        val reviewer = DigitSequenceReviewer()
+        val reviewer = DigitSequenceReviewerNextIndexImpl()
 
         assertThat(reviewer.createSumOfRepeatedDigits("1234"), equalTo(0))
     }
 
     @Test
     fun `it should review the sequence 1111 to produce a sum of 4`() {
-        val reviewer = DigitSequenceReviewer()
+        val reviewer = DigitSequenceReviewerNextIndexImpl()
 
         assertThat(reviewer.createSumOfRepeatedDigits("1111"), equalTo(4))
     }
 
     @Test
     fun `it should review the sequence 91212129 to produce a sum of 9`() {
-        val reviewer = DigitSequenceReviewer()
+        val reviewer = DigitSequenceReviewerNextIndexImpl()
 
         assertThat(reviewer.createSumOfRepeatedDigits("91212129"), equalTo(9))
     }
 
     @Test
     fun `it should solve the challenge input`() {
-        val reviewer = DigitSequenceReviewer()
+        val reviewer = DigitSequenceReviewerNextIndexImpl()
 
-        assertThat(reviewer.createSumOfRepeatedDigits(day1ChallengeInput), equalTo(123))
+        assertThat(reviewer.createSumOfRepeatedDigits(day1ChallengeInput), equalTo(1171))
     }
 }
 

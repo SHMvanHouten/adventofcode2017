@@ -1,21 +1,20 @@
 package day01inversecaptcha
 
-class DigitSequenceReviewer {
+abstract class DigitSequenceReviewer {
     fun createSumOfRepeatedDigits(inputSequence: String): Int {
         var sum = 0
-        for(index in 0.until(inputSequence.lastIndex)){
+        for(index in 0..inputSequence.lastIndex){
             val digit = inputSequence[index]
-            if(digit == inputSequence[index + 1]){
+            if(digit == getDigitToMatchWith(inputSequence, index)){
                 sum += digit.intValue()
             }
-        }
-        val lastDigit = inputSequence[inputSequence.lastIndex]
-        if(lastDigit == inputSequence[0]){
-            sum += lastDigit.intValue()
         }
 
         return sum
     }
+
+    abstract fun getDigitToMatchWith(inputSequence: String, index: Int):Char
+
 }
 
 private fun Char.intValue(): Int = this.toInt() - 48
