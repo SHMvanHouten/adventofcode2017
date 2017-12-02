@@ -14,7 +14,7 @@ class ChecksumCalculatorDivisibleValuesImpl : ChecksumCalculator() {
                 index --
             }
         }
-        println("bad input: no divisible values foud for $rowValues")
+        println("bad input: no divisible values found for $rowValues")
         return Int.MIN_VALUE
     }
 }
