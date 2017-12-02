@@ -4,25 +4,25 @@ import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import org.junit.Test
 
-class ChecksumCalculatorTest {
+class ChecksumCalculatorLowHighDifferenceImplTest {
 
     @Test
     fun `it should calculate a checksum of 8 for the input 5 1 9 5`() {
-        val calculator = ChecksumCalculator()
+        val calculator = ChecksumCalculatorLowHighDifferenceImpl()
         val input = "5 1 9 5"
         assertThat(calculator.calculateChecksum(input), equalTo(8))
     }
 
     @Test
     fun `it should calculate a checksum of 4 for the input 7 5 3`() {
-        val calculator = ChecksumCalculator()
+        val calculator = ChecksumCalculatorLowHighDifferenceImpl()
         val input = "7 5 3"
         assertThat(calculator.calculateChecksum(input), equalTo(4))
     }
 
     @Test
     fun `it should calculate a checksum of 4 for the multi-line input`() {
-        val calculator = ChecksumCalculator()
+        val calculator = ChecksumCalculatorLowHighDifferenceImpl()
         val input = """5 1 9 5
 7 5 3
 2 4 6 8"""
@@ -31,7 +31,7 @@ class ChecksumCalculatorTest {
 
     @Test
     fun `it should solve the challenge input`() {
-        val calculator = ChecksumCalculator()
+        val calculator = ChecksumCalculatorLowHighDifferenceImpl()
 
         assertThat(calculator.calculateChecksum(day02challengeInput), equalTo(44887))
     }

@@ -1,18 +1,20 @@
 package day02corruptionchecksum
 
-class ChecksumCalculator {
+abstract class ChecksumCalculator {
 
     fun calculateChecksum(rawInput: String): Int {
         val rows = rawInput.split("\n")
-        return rows.sumBy { getDifferenceBetweenHighestAndLowestValue(it) }
+        return rows.sumBy { calculateRowChecksum(it) }
     }
 
-    private fun getDifferenceBetweenHighestAndLowestValue(rawInput: String): Int {
-        val rowValues = rawInput
+    abstract fun calculateRowChecksum(rawInput: String): Int
+
+
+    fun getSortedRowValues(rawInput: String): List<Int> {
+        return rawInput
                 .split("\t", " ")
                 .map { it.toInt() }
-                .sorted()
-
-        return rowValues.last() - rowValues.first()
+                .sortedDescending()
     }
+
 }
