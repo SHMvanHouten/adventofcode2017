@@ -8,7 +8,7 @@ class WrittenValueFinder(private val spiralBuilder: SpiralBuilder = SpiralBuilde
         var currentSpiralValue = 1
         var index = 2
         while (currentSpiralValue <= valueToCompare){
-            val nextNode = spiralBuilder.getNextNode(spiral, index)
+            val nextNode = spiralBuilder.getNextNodeAndAssessDirection(spiral, index)
 
             currentSpiralValue = nextNode.value
 
