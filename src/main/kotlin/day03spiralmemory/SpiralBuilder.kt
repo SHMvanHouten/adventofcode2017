@@ -7,19 +7,19 @@ class SpiralBuilder {
         val firstNode = StorageNode(1, Coordinate(0, 0))
         val nodes = mutableMapOf(firstNode.coordinate to firstNode)
 
-        var directionToMove = EAST
+        var directionMoved = EAST
         var currentCoordinate = Coordinate(1, 0)
 
         for (index in 2..numberOfNodes) {
             nodes.put(currentCoordinate, StorageNode(index, currentCoordinate))
 
-            val leftTurn = directionToMove.turnLeft()
+            val leftTurn = directionMoved.turnLeft()
             val coordinateToTheLeft = currentCoordinate.move(leftTurn)
             if (!nodes.containsKey(coordinateToTheLeft)) {
-                directionToMove = leftTurn
+                directionMoved = leftTurn
                 currentCoordinate = coordinateToTheLeft
             }else {
-                currentCoordinate = currentCoordinate.move(directionToMove)
+                currentCoordinate = currentCoordinate.move(directionMoved)
             }
 
         }

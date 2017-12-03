@@ -11,5 +11,6 @@ class SpiralBuilderTest {
         val builder = SpiralBuilder()
         val spiral: Spiral = builder.buildSpiral(12)
         assertThat(spiral.getNode(10)?.coordinate, equalTo(Coordinate(2,1)))
+        assertThat(spiral.getNode(12)?.coordinate, equalTo(Coordinate(2, -1)))
     }
 }
