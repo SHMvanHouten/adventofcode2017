@@ -2,34 +2,41 @@ package day03spiralmemory
 
 import day03spiralmemory.Direction.*
 
-class SpiralBuilder {
-    fun buildSpiral(numberOfNodes: Int): Spiral {
-        val firstNode = StorageNode(1, Coordinate(0, 0))
-        val nodes = mutableMapOf(firstNode.coordinate to firstNode)
+abstract class SpiralBuilder {
 
-        var directionMoved = EAST
-        var currentCoordinate = Coordinate(1, 0)
+    internal var directionToMoveTo = EAST
+    internal var lastCoordinate = Coordinate(0, 0)
+
+    fun buildSpiral(numberOfNodes: Int): Spiral {
+        val nodes = getSpiralWithFirstNode()
+
 
         for (index in 2..numberOfNodes) {
-            nodes.put(currentCoordinate, StorageNode(index, currentCoordinate))
-
-            val leftTurn = directionMoved.turnLeft()
-            val coordinateToTheLeft = currentCoordinate.move(leftTurn)
-            if (!nodes.containsKey(coordinateToTheLeft)) {
-                directionMoved = leftTurn
-                currentCoordinate = coordinateToTheLeft
-            }else {
-                currentCoordinate = currentCoordinate.move(directionMoved)
-            }
-
+            val nextNode = getNextNode(nodes, index)
+            nodes.put(lastCoordinate,  nextNode)
         }
+
         return Spiral(nodes)
     }
 
+    fun getSpiralWithFirstNode(): MutableMap<Coordinate, StorageNode> {
+        val firstNode = StorageNode(1, Coordinate(0, 0))
+        val nodes = mutableMapOf(firstNode.coordinate to firstNode)
+        return nodes
+    }
 
+    abstract fun getNextNode(nodes: Map<Coordinate, StorageNode>, index: Int): StorageNode
+
+    internal fun getNewDirection(nodes: Map<Coordinate, StorageNode>) {
+        val leftTurn = directionToMoveTo.turnLeft()
+        val coordinateToTheLeft = lastCoordinate.move(leftTurn)
+        if (!nodes.containsKey(coordinateToTheLeft)) {
+            directionToMoveTo = leftTurn
+        }
+    }
 }
 
-private fun Coordinate.move(direction: Direction): Coordinate {
+internal fun Coordinate.move(direction: Direction): Coordinate {
     return when (direction) {
         NORTH -> this.north()
         EAST -> this.east()

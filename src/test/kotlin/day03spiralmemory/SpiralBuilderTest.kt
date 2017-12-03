@@ -8,7 +8,7 @@ class SpiralBuilderTest {
 
     @Test
     fun `it should build a spiral of 12 nodes`() {
-        val builder = SpiralBuilder()
+        val builder = SpiralBuilderNoValuesImpl()
         val spiral: Spiral = builder.buildSpiral(12)
         assertThat(spiral.getNode(10)?.coordinate, equalTo(Coordinate(2,1)))
         assertThat(spiral.getNode(12)?.coordinate, equalTo(Coordinate(2, -1)))
