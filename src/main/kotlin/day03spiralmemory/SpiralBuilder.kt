@@ -5,7 +5,7 @@ import day03spiralmemory.RelativePosition.*
 
 abstract class SpiralBuilder {
 
-    internal var directionToMoveTo = EAST
+    internal var lastDirectionMoved = SOUTH
     internal var lastCoordinate = Coordinate(0, 0)
 
     fun buildSpiral(numberOfNodes: Int): Spiral {
@@ -13,7 +13,7 @@ abstract class SpiralBuilder {
 
 
         for (index in 2..numberOfNodes) {
-            val nextNode = getNextNodeAndAssessDirection(nodes, index)
+            val nextNode = getNextNode(nodes, index)
             nodes.put(nextNode.coordinate,  nextNode)
         }
 
@@ -25,13 +25,13 @@ abstract class SpiralBuilder {
         return mutableMapOf(firstNode.coordinate to firstNode)
     }
 
-    abstract fun getNextNodeAndAssessDirection(nodes: Map<Coordinate, StorageNode>, index: Int): StorageNode
+    abstract fun getNextNode(nodes: Map<Coordinate, StorageNode>, index: Int): StorageNode
 
-    internal fun assessDirectionForNextNode(nodes: Map<Coordinate, StorageNode>) {
-        val leftTurn = directionToMoveTo.turnLeft()
+    internal fun assessDirection(nodes: Map<Coordinate, StorageNode>) {
+        val leftTurn = lastDirectionMoved.turnLeft()
         val coordinateToTheLeft = lastCoordinate.move(leftTurn)
         if (!nodes.containsKey(coordinateToTheLeft)) {
-            directionToMoveTo = leftTurn
+            lastDirectionMoved = leftTurn
         }
     }
 }

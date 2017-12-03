@@ -2,16 +2,13 @@ package day03spiralmemory
 
 class SpiralBuilderWithValuesImpl : SpiralBuilder() {
 
-    override fun getNextNodeAndAssessDirection(nodes: Map<Coordinate, StorageNode>, index: Int): StorageNode {
-        lastCoordinate = lastCoordinate.move(directionToMoveTo)
+    override fun getNextNode(nodes: Map<Coordinate, StorageNode>, index: Int): StorageNode {
+        assessDirection(nodes)
+        lastCoordinate = lastCoordinate.move(lastDirectionMoved)
 
         val valueForNode: Int = getValuesOfAllAdjacentNodes(nodes, lastCoordinate)
 
-        val node = StorageNode(index, lastCoordinate, valueForNode)
-
-        assessDirectionForNextNode(nodes)
-
-        return node
+        return StorageNode(index, lastCoordinate, valueForNode)
     }
 
     private fun getValuesOfAllAdjacentNodes(nodes: Map<Coordinate, StorageNode>, lastCoordinate: Coordinate): Int {
