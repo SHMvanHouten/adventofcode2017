@@ -31,7 +31,7 @@ class MemoryReAllocatorTest {
     fun `it should find how many re-allocations happen before it finds a duplicate state twice for the challenge input`() {
         val reAllocator = MemoryReAllocator()
 
-        assertThat(reAllocator.reallocateMemoryUntilDuplicateSituationOccursASecondTimeAfterTheFirst(day06ChallengeInput), equalTo(4))
+        assertThat(reAllocator.reallocateMemoryUntilDuplicateSituationOccursASecondTimeAfterTheFirst(day06ChallengeInput), equalTo(2793))
     }
 
 }
