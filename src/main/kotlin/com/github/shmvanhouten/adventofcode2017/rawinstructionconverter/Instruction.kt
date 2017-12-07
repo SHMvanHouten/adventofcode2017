@@ -1,0 +1,3 @@
+package com.github.shmvanhouten.adventofcode2017.rawinstructionconverter
+
+interface Instruction
