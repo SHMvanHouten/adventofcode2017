@@ -16,7 +16,7 @@ class JumpInstructionsRunnerBigOffsetDecreaserImplTest {
     fun `it should solve the challenge input`() {
         val runner = JumpInstructionsRunnerBigOffsetDecreaserImpl()
         val converter = RawJumpInstructionConverter()
-        val instructionList = converter.getListOfJumpInstructionsFromRawInput("/src/main/resources/day05/day05.txt")
+        val instructionList = converter.getListOfJumpInstructionsFromRawInput("/day05/day05.txt")
         com.natpryce.hamkrest.assertion.assertThat(runner.runInstructions(instructionList), equalTo(24490906))
     }
 }

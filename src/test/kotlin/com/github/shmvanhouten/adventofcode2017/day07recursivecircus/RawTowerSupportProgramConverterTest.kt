@@ -9,10 +9,10 @@ class RawTowerSupportProgramConverterTest {
     @Test
     fun `it should convert the rawInput to a list of towerSupportPrograms`() {
         val programConverter = RawTowerSupportProgramConverter()
-        val listOfTowerSupportPrograms = programConverter.getListOfTowerSupportPrograms("/src/main/resources/day07/day07.txt")
-//        for (towerSupportProgram in listOfTowerSupportPrograms) {
-//            println(towerSupportProgram)
-//        }
+        val listOfTowerSupportPrograms = programConverter.getListOfTowerSupportPrograms("/day07/day07.txt")
+        for (towerSupportProgram in listOfTowerSupportPrograms) {
+            println(towerSupportProgram)
+        }
         assertThat(listOfTowerSupportPrograms.size, equalTo(1454))
     }
 }

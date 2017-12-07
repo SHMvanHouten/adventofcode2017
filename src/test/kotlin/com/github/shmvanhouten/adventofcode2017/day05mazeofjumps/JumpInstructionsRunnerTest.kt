@@ -17,7 +17,7 @@ class JumpInstructionsRunnerTest {
     fun `it should solve the challenge input`() {
         val runner = JumpInstructionsRunnerRegularImpl()
         val converter = RawJumpInstructionConverter()
-        val instructionList = converter.getListOfJumpInstructionsFromRawInput("/src/main/resources/day05/day05.txt")
+        val instructionList = converter.getListOfJumpInstructionsFromRawInput("/day05/day05.txt")
         assertThat(runner.runInstructions(instructionList), equalTo(325922))
     }
 

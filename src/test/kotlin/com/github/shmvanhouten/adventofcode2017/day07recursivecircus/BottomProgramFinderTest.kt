@@ -9,7 +9,7 @@ class BottomProgramFinderTest {
     @Test
     fun `it should find the bottom program for the test input`() {
         val programConverter = RawTowerSupportProgramConverter()
-        val listOfTowerSupportPrograms = programConverter.getListOfTowerSupportPrograms("/src/main/resources/day07/testInput.txt")
+        val listOfTowerSupportPrograms = programConverter.getListOfTowerSupportPrograms("/day07/testInput.txt")
 
 
         val programFinder = BottomProgramFinder()
@@ -19,7 +19,7 @@ class BottomProgramFinderTest {
     @Test
     fun `it should solve the challenge input`() {
         val programConverter = RawTowerSupportProgramConverter()
-        val listOfTowerSupportPrograms = programConverter.getListOfTowerSupportPrograms("/src/main/resources/day07/day07.txt")
+        val listOfTowerSupportPrograms = programConverter.getListOfTowerSupportPrograms("/day07/day07.txt")
 
 
         val programFinder = BottomProgramFinder()
