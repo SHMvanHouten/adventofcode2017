@@ -2,10 +2,13 @@ package com.github.shmvanhouten.adventofcode2017.day07recursivecircus
 
 import com.github.shmvanhouten.adventofcode2017.rawinstructionconverter.RawInstructionConverter
 
-class RawTowerSupportProgramConverter(val rawInstructionConverter: RawInstructionConverter = RawInstructionConverter()) {
+class RawTowerSupportProgramConverter(private val rawInstructionConverter: RawInstructionConverter = RawInstructionConverter()) {
+
+    var towerSupportPrograms: List<TowerSupportProgram> = emptyList()
 
     fun getListOfTowerSupportPrograms(relativePath: String): List<TowerSupportProgram> {
-        return rawInstructionConverter.convertRawInputIntoInstructions(relativePath, this::convertInstruction)
+         towerSupportPrograms = rawInstructionConverter.convertRawInputIntoInstructions(relativePath, this::convertInstruction)
+        return towerSupportPrograms
     }
 
     private fun convertInstruction(readline: String): TowerSupportProgram {
@@ -17,6 +20,13 @@ class RawTowerSupportProgramConverter(val rawInstructionConverter: RawInstructio
                     .substring(readline.indexOf("-> ") + 3)
                     .split(", ")
         }
-        return TowerSupportProgram(name, weight, listOfTowersItSupports)
+        return TowerSupportProgram(name, weight, listOfTowersItSupports, this::getTowersByName)
+    }
+
+    private fun getTowersByName(towerNames: List<String>): List<TowerSupportProgram>{
+
+        return towerNames.map { name ->
+            towerSupportPrograms.find { it.name == name }!!
+        }
     }
 }
