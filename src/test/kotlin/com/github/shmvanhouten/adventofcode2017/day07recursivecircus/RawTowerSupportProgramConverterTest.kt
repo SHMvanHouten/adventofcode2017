@@ -14,6 +14,6 @@ class RawTowerSupportProgramConverterTest {
 //            println(towerSupportProgram)
 //        }
         assertThat(listOfTowerSupportPrograms.size, equalTo(1454))
-        println(listOfTowerSupportPrograms[2].totalWeight)
+        println(listOfTowerSupportPrograms.find { it.name == "mkxke" }!!.totalWeight)
     }
 }

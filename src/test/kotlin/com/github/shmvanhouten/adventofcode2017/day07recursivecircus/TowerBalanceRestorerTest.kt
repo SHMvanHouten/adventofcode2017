@@ -14,4 +14,13 @@ class TowerBalanceRestorerTest {
         val balanceRestorer = TowerBalanceRestorer()
         assertThat(balanceRestorer.findCorrectWeightForUnbalancedProgram(listOfTowerSupportPrograms), equalTo(60))
     }
+
+    @Test
+    fun `it should solve the challenge input`() {
+        val programConverter = RawTowerSupportProgramConverter()
+        val listOfTowerSupportPrograms = programConverter.getListOfTowerSupportPrograms("/day07/day07.txt")
+
+        val balanceRestorer = TowerBalanceRestorer()
+        assertThat(balanceRestorer.findCorrectWeightForUnbalancedProgram(listOfTowerSupportPrograms), equalTo(268))
+    }
 }
