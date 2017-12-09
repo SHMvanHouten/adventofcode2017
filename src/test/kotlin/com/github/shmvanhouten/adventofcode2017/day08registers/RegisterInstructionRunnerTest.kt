@@ -48,4 +48,24 @@ class RegisterInstructionRunnerTest {
         val registerInstructionRunner = RegisterInstructionRunner()
         assertThat(registerInstructionRunner.findLargestRegisterValueAfterRunningInstructions(listOfRegisterInstructions), equalTo(8022))
     }
+
+
+    @Test
+    fun `it should run the instructions and find the highest held value in any register is 10`() {
+        val converter = RawConditionalRegisterInstructionConverter()
+        val listOfRegisterInstructions = converter.getListOfRegisterInstructions("/day08/day08TestInput.txt")
+
+        val registerInstructionRunner = RegisterInstructionRunner()
+        assertThat(registerInstructionRunner.findHighestRegisterValueHeldAfterRunningInstructions(listOfRegisterInstructions), equalTo(10))
+    }
+
+
+    @Test
+    fun `it should run the instructions and find the highest held register value for the challenge input`() {
+        val converter = RawConditionalRegisterInstructionConverter()
+        val listOfRegisterInstructions = converter.getListOfRegisterInstructions("/day08/day08.txt")
+
+        val registerInstructionRunner = RegisterInstructionRunner()
+        assertThat(registerInstructionRunner.findHighestRegisterValueHeldAfterRunningInstructions(listOfRegisterInstructions), equalTo(8022))
+    }
 }

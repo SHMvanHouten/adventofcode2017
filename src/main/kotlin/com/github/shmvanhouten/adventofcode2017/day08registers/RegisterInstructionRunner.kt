@@ -16,6 +16,21 @@ class RegisterInstructionRunner {
         return registers.values.max()
     }
 
+    fun findHighestRegisterValueHeldAfterRunningInstructions(listOfRegisterInstructions: List<ConditionalRegisterModificationInstruction>): Int {
+        var highestValue = 0
+        listOfRegisterInstructions.forEach { instruction ->
+            if (doesConditionPass(instruction.conditionalInstruction)) {
+                runModificationInstruction(instruction.modificationInstruction)
+
+                val registerValueAfterModification = registers.getValue(instruction.modificationInstruction.registerToModify)
+                if (registerValueAfterModification > highestValue) {
+                    highestValue = registerValueAfterModification
+                }
+            }
+        }
+        return highestValue
+    }
+
     private fun doesConditionPass(conditionalInstruction: ConditionalInstruction): Boolean {
 
         val conditionalRegisterValue = registers.getOrPut(conditionalInstruction.registerToCheck, { 0 })
