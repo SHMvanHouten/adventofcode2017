@@ -1,32 +1,54 @@
 package com.github.shmvanhouten.adventofcode2017.day08registers
 
-import com.github.shmvanhouten.adventofcode2017.day08registers.Modification.*
+import com.github.shmvanhouten.adventofcode2017.day08registers.ComparisonOperator.*
 
 class RegisterInstructionRunner {
-    fun findLargestRegisterValueAfterRunningInstructions(listOfRegisterInstructions: List<ConditionalRegisterInstruction>): Int? {
-        val registers = mutableMapOf<String, Int>()
+
+    private val registers = mutableMapOf<String, Int>()
+
+    fun findLargestRegisterValueAfterRunningInstructions(listOfRegisterInstructions: List<ConditionalRegisterModificationInstruction>): Int? {
 
         listOfRegisterInstructions.forEach { instruction ->
-            val conditionalRegister = instruction.conditionalRegister
-            if (!registers.containsKey(conditionalRegister)) {
-                registers.put(conditionalRegister, 0)
-            }
-            val registerToModify = instruction.registerToModify
-            if(!registers.containsKey(registerToModify)){
-                registers.put(registerToModify, 0)
-            }
-            if (instruction.registerPassesCondition(registers.getValue(conditionalRegister))) {
-                registers.merge(registerToModify, instruction.amountToModify,
-                        { originalAmount, newAmount -> instruction.modifyRegister(originalAmount, newAmount) })
-            }
+            if (doesConditionPass(instruction.conditionalInstruction))
+                runModificationInstruction(instruction.modificationInstruction)
         }
+
         return registers.values.max()
     }
 
-    private fun applyModificationToRegister(originalAmount: Int, newAmount: Int, modification: Modification): Int {
-        return when(modification){
-            INCREASE -> originalAmount + newAmount
-            DECREASE -> originalAmount - newAmount
+    private fun doesConditionPass(conditionalInstruction: ConditionalInstruction): Boolean {
+
+        val conditionalRegisterValue = registers.getOrPut(conditionalInstruction.registerToCheck, { 0 })
+
+        val numberToCheckAgainst = conditionalInstruction.numberToCheckRegisterAgainst
+
+        return when (conditionalInstruction.comparisonOperator) {
+            EQUALS -> conditionalRegisterValue == numberToCheckAgainst
+            DOES_NOT_EQUAL -> conditionalRegisterValue != numberToCheckAgainst
+            GREATER_THAN -> conditionalRegisterValue > numberToCheckAgainst
+            LESS_THAN -> conditionalRegisterValue < numberToCheckAgainst
+            GREATER_THAN_OR_EQUAL_TO -> conditionalRegisterValue >= numberToCheckAgainst
+            LESS_THAN_OR_EQUAL_TO -> conditionalRegisterValue <= numberToCheckAgainst
         }
+    }
+
+    private fun runModificationInstruction(modificationInstruction: ModificationInstruction) {
+        val registerToModify = modificationInstruction.registerToModify
+        if (!registers.containsKey(registerToModify)) {
+            registers.put(registerToModify, 0)
+        }
+
+        when(modificationInstruction.modification){
+
+            Modification.INCREASE -> {
+                registers.merge(registerToModify, modificationInstruction.amountToModify,
+                        {registerValue, amountToAdd -> registerValue + amountToAdd})
+            }
+            Modification.DECREASE -> {
+                registers.merge(registerToModify, modificationInstruction.amountToModify,
+                        {registerValue, amountToAdd -> registerValue - amountToAdd})
+            }
+        }
+
     }
 }
