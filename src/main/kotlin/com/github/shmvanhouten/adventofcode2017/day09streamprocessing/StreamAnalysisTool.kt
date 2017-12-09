@@ -26,12 +26,11 @@ class StreamAnalysisTool {
                     unAnalyzedStream = unAnalyzedStream.substring(1)
                 }
                 '<' -> {
-                    val streamAfterGarbageDeletion = deleteGarbageFromStream(unAnalyzedStream)
-                    val garbage = unAnalyzedStream.substring(1, unAnalyzedStream.length - (streamAfterGarbageDeletion.length) - 1)
+                    val (streamAfterGarbageRemoval, amountOfUnescapedCharactersRemoved) = deleteGarbageFromStream(unAnalyzedStream)
 
-                    totalGarbageSize += analyzeGarbage(garbage)
+                    totalGarbageSize += amountOfUnescapedCharactersRemoved
 
-                    unAnalyzedStream = streamAfterGarbageDeletion
+                    unAnalyzedStream = streamAfterGarbageRemoval
                 }
             }
         }
@@ -39,61 +38,29 @@ class StreamAnalysisTool {
         return Pair(totalGroupValue, totalGarbageSize)
     }
 
-    private fun analyzeGarbage(garbage: String): Int {
+    private tailrec fun deleteGarbageFromStream(unAnalyzedStream: String, amountOfDeletedCharacters: Int = 0): Pair<String, Int> {
+        val relevantCharacter = Regex("""[!>]""").find(unAnalyzedStream)!!
+        val indexOfRelevantCharacter = relevantCharacter.range.first
+        val newAmountOfDeletedCharacters = amountOfDeletedCharacters + indexOfRelevantCharacter
 
-        var remainingGarbage = garbage
-        var amountOfDeletedChars = 0
-        var indexOfEscapeCharacter = remainingGarbage.indexOf('!')
-
-        while (indexOfEscapeCharacter != -1) {
-            amountOfDeletedChars += indexOfEscapeCharacter
-            remainingGarbage = removeEscapeCharactersFromGarbage(remainingGarbage.substring(indexOfEscapeCharacter))
-            indexOfEscapeCharacter = remainingGarbage.indexOf('!')
+        if (relevantCharacter.value == ">") {
+            val unAnalyzedStreamAfterGarbageClose = unAnalyzedStream.substring(indexOfRelevantCharacter + 1)
+            return Pair(unAnalyzedStreamAfterGarbageClose, newAmountOfDeletedCharacters - 1)
         }
 
-        return amountOfDeletedChars + remainingGarbage.length
+        // relevant character is an escape character (!)
+        val streamWithEscapedCharsRemoved = removeEscapeCharactersFromGarbage(unAnalyzedStream.substring(indexOfRelevantCharacter))
+        return deleteGarbageFromStream(streamWithEscapedCharsRemoved, newAmountOfDeletedCharacters)
     }
 
-    private fun removeEscapeCharactersFromGarbage(remainingGarbageFromEscapeChar: String): String {
-        var shouldDeleteNextChar = true
-        var index = 1
-        var charAtIndex = remainingGarbageFromEscapeChar[index]
+    private tailrec fun removeEscapeCharactersFromGarbage(remainingGarbageFromEscapeChar: String, nextCharIsEscaped: Boolean = false): String {
 
-        while (charAtIndex == '!') {
-            shouldDeleteNextChar = !shouldDeleteNextChar
-            index++
-            if (index == remainingGarbageFromEscapeChar.length){
-                return ""
-            }
-
-            charAtIndex = remainingGarbageFromEscapeChar[index]
+        val firstChar = remainingGarbageFromEscapeChar.first()
+        if(firstChar != '!'){
+            return if(nextCharIsEscaped) remainingGarbageFromEscapeChar.substring(1)
+            else remainingGarbageFromEscapeChar.substring(0)
         }
 
-        return if (shouldDeleteNextChar) {
-            remainingGarbageFromEscapeChar.substring(index + 1)
-        } else {
-            remainingGarbageFromEscapeChar.substring(index)
-        }
+        return removeEscapeCharactersFromGarbage(remainingGarbageFromEscapeChar.substring(1), !nextCharIsEscaped)
     }
-
-    private tailrec fun deleteGarbageFromStream(unAnalyzedStream: String): String {
-        val regex = Regex("""^(.*?)>""")
-        val charactersUpToAndIncludingGarbageEnd = regex.find(unAnalyzedStream)!!
-        val streamAfterEndIndicator = unAnalyzedStream.substring(charactersUpToAndIncludingGarbageEnd.range.last + 1)
-        if (isEndIndicatorValid(charactersUpToAndIncludingGarbageEnd.value)) {
-            return streamAfterEndIndicator
-        }
-        return deleteGarbageFromStream(streamAfterEndIndicator)
-    }
-
-    private fun isEndIndicatorValid(charactersUpToAndIncludingGarbageEnd: String): Boolean {
-        val charactersReversed = charactersUpToAndIncludingGarbageEnd.reversed().substring(1)
-        var isValidIndicator = true
-        charactersReversed.forEach {
-            if (it == '!') isValidIndicator = !isValidIndicator
-            else return isValidIndicator
-        }
-        return isValidIndicator
-    }
-
 }
