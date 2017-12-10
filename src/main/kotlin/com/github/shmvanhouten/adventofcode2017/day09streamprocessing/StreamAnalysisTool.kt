@@ -3,10 +3,12 @@ package com.github.shmvanhouten.adventofcode2017.day09streamprocessing
 class StreamAnalysisTool {
 
     fun deleteGarbageAndFindGroupValue(stream: String): Pair<Int, Int> {
-        var totalGroupValue = 0
-        var currentGroupValue = 0
         var unAnalyzedStream = stream
+
+        var totalGroupValue = 0
         var totalGarbageSize = 0
+
+        var currentGroupValue = 0
 
 
         while (unAnalyzedStream.isNotEmpty()) {
