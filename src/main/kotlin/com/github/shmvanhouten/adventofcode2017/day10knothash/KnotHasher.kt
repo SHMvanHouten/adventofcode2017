@@ -1,24 +1,26 @@
 package com.github.shmvanhouten.adventofcode2017.day10knothash
 
-class KnotHasher {
+open class KnotHasher {
 
     fun multiplyFirstTwoNumbersInHash(rangeSize: Int, inputLengths: Set<Int>): Int {
         val hash = createHash(rangeSize, inputLengths)
         return hash.first() * hash.second()
     }
 
-    fun createHash(rangeSize: Int, inputLengths: Set<Int>): List<Int> {
+    fun createHash(rangeSize: Int, inputLengths: Iterable<Int>, timesToHash: Int = 1): List<Int> {
 
         var currentPosition = 0
         var skipSize = 0
         var listToHash = (0.until(rangeSize)).toList()
 
-        inputLengths.forEach { inputLength ->
+        (0.until(timesToHash)).forEach {
+            inputLengths.forEach { inputLength ->
 
-            listToHash = performHashing(listToHash, currentPosition, inputLength)
+                listToHash = performHashing(listToHash, currentPosition, inputLength)
 
-            currentPosition = (currentPosition + skipSize + inputLength) % listToHash.size
-            skipSize++
+                currentPosition = (currentPosition + skipSize + inputLength) % listToHash.size
+                skipSize++
+            }
         }
         return listToHash
     }

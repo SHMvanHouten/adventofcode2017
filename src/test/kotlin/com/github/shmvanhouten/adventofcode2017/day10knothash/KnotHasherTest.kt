@@ -6,6 +6,8 @@ import org.junit.Test
 
 class KnotHasherTest {
 
+    private val day10ChallengeInput = setOf(106,16,254,226,55,2,1,166,177,247,93,0,255,228,60,36)
+
     @Test
     fun `it should reverse the first three chars in a range of 0 to 4`() {
         val hasher = KnotHasher()
@@ -36,7 +38,4 @@ class KnotHasherTest {
         val hasher = KnotHasher()
         assertThat(hasher.multiplyFirstTwoNumbersInHash(256, day10ChallengeInput), equalTo(11413))
     }
-
-
 }
-val day10ChallengeInput = setOf(106,16,254,226,55,2,1,166,177,247,93,0,255,228,60,36)
