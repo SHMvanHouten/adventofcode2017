@@ -7,10 +7,10 @@ import org.junit.Test
 class HexGridPathFinderTest {
 
     @Test
-    fun `it should find the path back from 1,1 in one step`() {
+    fun `it should find the path back from 1,1 in two steps`() {
         val currentCoordinate = HexCoordinate(1,1)
         val pathFinder = HexGridPathFinder()
-        assertThat(pathFinder.findShortestPath(currentCoordinate), equalTo(1))
+        assertThat(pathFinder.findShortestPath(currentCoordinate), equalTo(2))
     }
 
     @Test
@@ -39,6 +39,27 @@ class HexGridPathFinderTest {
         val currentCoordinate = HexCoordinate(4,1)
         val pathFinder = HexGridPathFinder()
         assertThat(pathFinder.findShortestPath(currentCoordinate), equalTo(4))
+    }
+
+    @Test
+    fun `it should find the path back from 1,2 in three steps`() {
+        val currentCoordinate = HexCoordinate(1,2)
+        val pathFinder = HexGridPathFinder()
+        assertThat(pathFinder.findShortestPath(currentCoordinate), equalTo(3))
+    }
+
+    @Test
+    fun `it should find the path back from 8,5 in nine steps`() {
+        val currentCoordinate = HexCoordinate(8,5)
+        val pathFinder = HexGridPathFinder()
+        assertThat(pathFinder.findShortestPath(currentCoordinate), equalTo(9))
+    }
+
+    @Test
+    fun `it should find the path back from 8,-4 in eight steps`() {
+        val currentCoordinate = HexCoordinate(8,-4)
+        val pathFinder = HexGridPathFinder()
+        assertThat(pathFinder.findShortestPath(currentCoordinate), equalTo(8))
     }
 
     @Test

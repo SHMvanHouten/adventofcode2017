@@ -5,7 +5,7 @@ import com.github.shmvanhouten.adventofcode2017.day11hexagonalgrid.Direction.*
 data class HexCoordinate(val x: Int, val y: Int) {
 
     fun getNeighbouringHexTo(direction: Direction): HexCoordinate {
-        return if (this.x % 2 == 0) {
+        return if (this.x % 2 != 0) {
             when (direction) {
                 NORTH -> HexCoordinate(this.x, this.y - 1)
                 SOUTH -> HexCoordinate(this.x, this.y + 1)

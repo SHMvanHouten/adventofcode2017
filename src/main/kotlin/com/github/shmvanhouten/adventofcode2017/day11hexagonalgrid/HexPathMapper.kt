@@ -12,6 +12,7 @@ class HexPathMapper {
             currentPosition = currentPosition.getNeighbouringHexTo(direction)
         }
 
+        println(currentPosition)
         return currentPosition
     }
 
