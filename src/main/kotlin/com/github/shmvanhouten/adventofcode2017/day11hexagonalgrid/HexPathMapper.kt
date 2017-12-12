@@ -5,8 +5,7 @@ import com.github.shmvanhouten.adventofcode2017.day11hexagonalgrid.Direction.*
 class HexPathMapper {
 
     fun takePath(rawStepsInput: String, startintCoordinate: HexCoordinate = HexCoordinate(0,0)): HexCoordinate {
-        val steps = rawStepsInput.split(",")
-                .map { parseDirection(it) }.asIterable()
+        val steps = getStepsFromRawInput(rawStepsInput)
 
         var currentPosition = startintCoordinate
         steps.forEach { direction ->
@@ -14,6 +13,21 @@ class HexPathMapper {
         }
 
         return currentPosition
+    }
+
+
+    fun drawPath(rawStepsInput: String, startintCoordinate: HexCoordinate = HexCoordinate(0,0)): List<HexCoordinate> {
+        val steps = getStepsFromRawInput(rawStepsInput)
+        var currentPosition = startintCoordinate
+        return steps.map { direction ->
+            currentPosition = currentPosition.getNeighbouringHexTo(direction)
+            currentPosition
+        }
+    }
+
+    private fun getStepsFromRawInput(rawStepsInput: String): Iterable<Direction> {
+        return rawStepsInput.split(",")
+                .map { parseDirection(it) }.asIterable()
     }
 
     private fun parseDirection(rawDirection: String): Direction {
