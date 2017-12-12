@@ -10,7 +10,6 @@ class PipedProgramBuilderTest {
     fun `it should build all the piped programs from the challenge input`() {
         val builder = PipedProgramBuilder()
         val pipedProgram = builder.buildPipedPrograms("/day12/day12.txt")
-        assertThat(pipedProgram.id, equalTo(0))
-        assertThat(pipedProgram.connectedPrograms[0].id, equalTo(122))
+        assertThat(pipedProgram.getValue(0).id, equalTo(0))
     }
 }

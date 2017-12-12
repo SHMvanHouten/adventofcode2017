@@ -4,11 +4,11 @@ import com.github.shmvanhouten.adventofcode2017.rawinstructionconverter.RawInstr
 
 class PipedProgramBuilder(private val rawInstructionConverter: RawInstructionConverter = RawInstructionConverter()) {
 
-    var pipedProgramList = emptySet<PipedProgram>()
 
-    fun buildPipedPrograms(path: String): PipedProgram {
-        pipedProgramList = rawInstructionConverter.convertRawInputIntoInstructions(path, this::buildPipedProgram).toSet()
-        return pipedProgramList.find { it.id == 0 }!!
+    fun buildPipedPrograms(path: String): Map<Int, PipedProgram> {
+        return rawInstructionConverter
+                .convertRawInputIntoInstructions(path, this::buildPipedProgram)
+                .associateBy({it.id}, {it})
     }
 
     private fun buildPipedProgram(rawProgram: String): PipedProgram {
@@ -16,10 +16,6 @@ class PipedProgramBuilder(private val rawInstructionConverter: RawInstructionCon
         val connectedProgramIds = rawProgram.substring(rawProgram.indexOf('>') + 2)
                 .split(", ")
                 .map { it.toInt() }
-        return PipedProgram(programId, connectedProgramIds, this)
-    }
-
-    fun getPipedProgram(programId: Int): PipedProgram {
-        return pipedProgramList.find { it.id == programId }!!
+        return PipedProgram(programId, connectedProgramIds)
     }
 }
