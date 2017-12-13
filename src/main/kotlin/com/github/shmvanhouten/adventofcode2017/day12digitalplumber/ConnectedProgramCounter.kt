@@ -1,6 +1,6 @@
 package com.github.shmvanhouten.adventofcode2017.day12digitalplumber
 
-class ConnectedProgramCounter(private val pipedProgramBuilder: PipedProgramBuilder = PipedProgramBuilder(), private val path: String) {
+class ConnectedProgramCounter(pipedProgramBuilder: PipedProgramBuilder = PipedProgramBuilder(), path: String) {
 
     private val pipedPrograms: Map<Int, PipedProgram> = pipedProgramBuilder.buildPipedPrograms(path)
 
@@ -16,7 +16,7 @@ class ConnectedProgramCounter(private val pipedProgramBuilder: PipedProgramBuild
         while (programsNotFoundInGroupYet.isNotEmpty()) {
             val programsInGroup = getProgramsInGroup(programsNotFoundInGroupYet.first().id)
             programsNotFoundInGroupYet -= programsInGroup
-            amountOfGroups ++
+            amountOfGroups++
         }
         return amountOfGroups
     }
