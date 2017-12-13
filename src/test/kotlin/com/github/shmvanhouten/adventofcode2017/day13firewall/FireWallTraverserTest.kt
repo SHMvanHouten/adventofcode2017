@@ -44,6 +44,6 @@ class FireWallTraverserTest {
         val constructor = FireWallConstructor()
         val fireWall = constructor.buildFireWallFromRawInstructions("/day13/day13.txt")
         val traverser = FireWallTraverser(fireWall)
-        assertThat(traverser.getTimeToWaitForUndetectedTraversal(), equalTo(1728))
+        assertThat(traverser.getTimeToWaitForUndetectedTraversal(), equalTo(3946838))
     }
 }
