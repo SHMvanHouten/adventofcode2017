@@ -7,15 +7,22 @@ import org.junit.Test
 class DiskSpaceCalculatorTest {
 
     @Test
-    fun `it should calculate which spaces are free or used for the test input`() {
+    fun `it should calculate which spaces are used for the test input`() {
         val calculator = DiskSpaceCalculator()
         assertThat(calculator.calculateAmountOfUsedSpaces("flqrgnkx"), equalTo(8108))
     }
 
     @Test
-    fun `it should calculate which spaces are free or used for the challenge input`() {
+    fun `it should calculate which spaces are used for the challenge input`() {
         val calculator = DiskSpaceCalculator()
         assertThat(calculator.calculateAmountOfUsedSpaces("jxqlasbh"), equalTo(8140))
+    }
+
+
+    @Test
+    fun `it should calculate the amount of regions for the test input`() {
+        val calculator = DiskSpaceCalculator()
+        assertThat(calculator.calculateAmountOfRegions("flqrgnkx"), equalTo(1242))
     }
 
 
