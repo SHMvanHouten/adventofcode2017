@@ -25,5 +25,11 @@ class DiskSpaceCalculatorTest {
         assertThat(calculator.calculateAmountOfRegions("flqrgnkx"), equalTo(1242))
     }
 
+    @Test
+    fun `it should calculate the amount of regions for the challenge input`() {
+        val calculator = DiskSpaceCalculator()
+        assertThat(calculator.calculateAmountOfRegions("jxqlasbh"), equalTo(1182))
+    }
+
 
 }
