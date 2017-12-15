@@ -44,10 +44,3 @@ internal fun Coordinate.move(direction: Direction): Coordinate {
         WEST -> this + LEFT.coordinate
     }
 }
-
-
-internal operator fun Coordinate.plus(otherCoordinate: Coordinate): Coordinate {
-    val x = this.x + otherCoordinate.x
-    val y = this.y + otherCoordinate.y
-    return Coordinate(x, y)
-}

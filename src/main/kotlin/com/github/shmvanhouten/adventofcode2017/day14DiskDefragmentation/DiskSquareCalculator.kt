@@ -2,26 +2,26 @@ package com.github.shmvanhouten.adventofcode2017.day14DiskDefragmentation
 
 import com.github.shmvanhouten.adventofcode2017.day03spiralmemory.Coordinate
 
-class DiskSpaceCalculator(private val diskBuilder: DiskBuilder = DiskBuilder()) {
+class DiskSquareCalculator(private val diskBuilder: DiskBuilder = DiskBuilder()) {
 
-    fun calculateAmountOfUsedSpaces(key: String): Int {
-        return (0.until(128)).sumBy { diskBuilder.calculateUsedSpacesInRow(it, key) }
+    fun calculateAmountOfUsedSquares(key: String): Int {
+        return (0.until(128)).sumBy { diskBuilder.calculateUsedSquaresInRow(it, key) }
     }
 
     fun calculateAmountOfRegions(key: String): Int {
-        val usedSpaces = diskBuilder.getListOfUsedSpaces(key)
+        val usedSquares = diskBuilder.getListOfUsedSquares(key)
 
         var visitedCoordinates = setOf<Coordinate>()
         var amountOfRegions = 0
 
-        usedSpaces.forEach { coordinate ->
-            if (coordinate.getNeighbours().any { usedSpaces.contains(it) }) {
+        usedSquares.forEach { coordinate ->
+            if (coordinate.getNeighbours().any { usedSquares.contains(it) }) {
                 if (visitedCoordinates.none { it == coordinate }) {
-                    visitedCoordinates += findCompleteRegion(usedSpaces, coordinate)
+                    visitedCoordinates += findCompleteRegion(usedSquares, coordinate)
                     amountOfRegions++
                 }
             } else {
-                // single space will count as a region
+                // single square will count as a region
                 amountOfRegions++
             }
             visitedCoordinates += coordinate
@@ -31,7 +31,7 @@ class DiskSpaceCalculator(private val diskBuilder: DiskBuilder = DiskBuilder()) 
     }
 
 
-    private fun findCompleteRegion(usedSpaces: List<Coordinate>, originalCoordinate: Coordinate): Set<Coordinate> {
+    private fun findCompleteRegion(usedSquares: List<Coordinate>, originalCoordinate: Coordinate): Set<Coordinate> {
 
         var unvisitedCoordinates = setOf(originalCoordinate)
         var visitedCoordinates = setOf<Coordinate>()
@@ -41,7 +41,7 @@ class DiskSpaceCalculator(private val diskBuilder: DiskBuilder = DiskBuilder()) 
             unvisitedCoordinates -= currentCoordinate
             visitedCoordinates += currentCoordinate
 
-            unvisitedCoordinates += currentCoordinate.getNeighbours().filter { neighbour -> usedSpaces.contains(neighbour) }
+            unvisitedCoordinates += currentCoordinate.getNeighbours().filter { neighbour -> usedSquares.contains(neighbour) }
                     .filter { neighbour -> !visitedCoordinates.contains(neighbour) }
                     .filter { neighbour -> !unvisitedCoordinates.contains(neighbour) }
         }

@@ -7,27 +7,27 @@ import com.github.shmvanhouten.adventofcode2017.day10knothash.DenseKnotHasher
 class DiskBuilder(private val knotHasher: DenseKnotHasher = DenseKnotHasher()) {
 
 
-    fun getListOfUsedSpaces(key: String): List<Coordinate> {
-        return (0.until(128)).flatMap { locateUsedSpaces(it, key) }
+    fun getListOfUsedSquares(key: String): List<Coordinate> {
+        return (0.until(128)).flatMap { locateUsedSquares(it, key) }
     }
 
-    internal fun calculateUsedSpacesInRow(rowNr: Int, key: String): Int {
-        val rowValues = getRowValues(rowNr, key)
+    fun calculateUsedSquaresInRow(rowNr: Int, key: String): Int {
+        val rowValues = calculateUsedSquaresPerRow(rowNr, key)
         return rowValues.count { it == '1' }
     }
 
-    private fun locateUsedSpaces(rowNr: Int, key: String): List<Coordinate> {
-        val row = getRowValues(rowNr, key)
+    private fun locateUsedSquares(rowNr: Int, key: String): List<Coordinate> {
+        val row = calculateUsedSquaresPerRow(rowNr, key)
 
         return row.mapIndexedNotNull { index, square ->
             if (square == '1') Coordinate(index, rowNr) else null
         }
     }
 
-    private fun getRowValues(rowNr: Int, key: String): List<Char> {
+    private fun calculateUsedSquaresPerRow(rowNr: Int, key: String): Iterable<Char> {
         val rowKey = key + "-" + rowNr
         val hashedResult = knotHasher.performDenseHash(rowKey)
-        return hashedResult.flatMap { convertToBinary(it) }
+        return hashedResult.flatMap { convertToBinary(it) }.asIterable()
     }
 
     private fun convertToBinary(hexadecimalChar: Char): Iterable<Char> {
