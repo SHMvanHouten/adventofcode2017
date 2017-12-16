@@ -15,10 +15,8 @@ class Judge(private val generatorA: NumberGenerator, private val generatorB: Num
     }
 
     private fun getLowest16BitsOfBinaryValue(value: Long): String {
-        var binaryString = java.lang.Long.toBinaryString(value)
-            while (binaryString.length < 16) {
-                binaryString = '0' + binaryString
-            }
-            return binaryString.substring(binaryString.length - 16, binaryString.length)
-        }
+        val binaryString = java.lang.Long.toBinaryString(value)
+        return if (binaryString.length < 16) binaryString
+        else binaryString.substring(binaryString.length - 16, binaryString.length)
+    }
 }
