@@ -59,15 +59,3 @@ data class PartnerMove(private val firstPartner: Char, private val secondPartner
     }
 }
 
-data class CondensedDanceMove(private val move: (List<Char>, List<Int>) -> List<Char>, private val newPositionsOfPrograms: List<Int>) : DanceMove {
-
-    override fun getMove(): (List<Char>) -> List<Char> {
-        return this::moveCharactersToNewPositions
-    }
-
-    private fun moveCharactersToNewPositions(dancePrograms: List<Char>): List<Char> {
-        return move(dancePrograms, newPositionsOfPrograms)
-    }
-}
-
-

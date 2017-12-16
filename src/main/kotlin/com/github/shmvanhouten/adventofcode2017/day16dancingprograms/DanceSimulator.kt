@@ -1,7 +1,6 @@
 package com.github.shmvanhouten.adventofcode2017.day16dancingprograms
 
-// removing the condenser bugs out Intellij
-class DanceSimulator(private val converter: DanceMoveConverter = DanceMoveConverter(), private val condenser: DanceMoveCondenser = DanceMoveCondenser()) {
+class DanceSimulator(private val converter: DanceMoveConverter = DanceMoveConverter()) {
 
 
     fun getOrderOfProgramsAfterXDances(rawInput: String, amountOfDancePrograms: Int, amountOfDances: Int): String {
