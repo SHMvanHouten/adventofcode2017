@@ -3,7 +3,7 @@ package com.github.shmvanhouten.adventofcode2017.day08registers
 import com.github.shmvanhouten.adventofcode2017.day08registers.ComparisonOperator.*
 import com.github.shmvanhouten.adventofcode2017.day08registers.Modification.DECREASE
 import com.github.shmvanhouten.adventofcode2017.day08registers.Modification.INCREASE
-import com.github.shmvanhouten.adventofcode2017.rawinstructionconverter.RawInstructionConverter
+import com.github.shmvanhouten.adventofcode2017.util.rawinstructionconverter.RawInstructionConverter
 
 class RawConditionalRegisterInstructionConverter(private val rawInstructionConverter: RawInstructionConverter = RawInstructionConverter()) {
 

@@ -1,4 +1,4 @@
-package com.github.shmvanhouten.adventofcode2017.rawinstructionconverter
+package com.github.shmvanhouten.adventofcode2017.util.rawinstructionconverter
 
 class RawInstructionConverter {
 

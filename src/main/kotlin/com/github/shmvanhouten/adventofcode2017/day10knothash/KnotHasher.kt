@@ -1,5 +1,7 @@
 package com.github.shmvanhouten.adventofcode2017.day10knothash
 
+import com.github.shmvanhouten.adventofcode2017.util.splitIntoTwo
+
 open class KnotHasher {
 
     fun multiplyFirstTwoNumbersInHash(rangeSize: Int, inputLengths: Set<Int>): Int {
@@ -56,11 +58,7 @@ open class KnotHasher {
 
 }
 
-private fun <E> List<E>.splitIntoTwo(indexToSplitReversedList: Int): Pair<List<E>, List<E>> {
-    val firstPart = this.subList(0, indexToSplitReversedList)
-    val secondPart = this.subList(indexToSplitReversedList, this.size)
-    return Pair(firstPart, secondPart)
-}
+
 
 private fun <E> List<E>.splitThreeWays(firstSplitPoint: Int, secondSplitPoint: Int): Triple<List<E>, List<E>, List<E>> {
     val firstPart = this.subList(0, firstSplitPoint)

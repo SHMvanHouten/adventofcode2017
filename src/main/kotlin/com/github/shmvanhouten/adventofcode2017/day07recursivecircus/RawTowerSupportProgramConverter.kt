@@ -1,6 +1,6 @@
 package com.github.shmvanhouten.adventofcode2017.day07recursivecircus
 
-import com.github.shmvanhouten.adventofcode2017.rawinstructionconverter.RawInstructionConverter
+import com.github.shmvanhouten.adventofcode2017.util.rawinstructionconverter.RawInstructionConverter
 
 class RawTowerSupportProgramConverter(private val rawInstructionConverter: RawInstructionConverter = RawInstructionConverter()) {
 

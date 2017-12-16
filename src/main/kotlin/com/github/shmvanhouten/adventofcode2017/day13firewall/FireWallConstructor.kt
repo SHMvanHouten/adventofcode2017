@@ -1,6 +1,7 @@
 package com.github.shmvanhouten.adventofcode2017.day13firewall
 
-import com.github.shmvanhouten.adventofcode2017.rawinstructionconverter.RawInstructionConverter
+import com.github.shmvanhouten.adventofcode2017.util.rawinstructionconverter.RawInstructionConverter
+import com.github.shmvanhouten.adventofcode2017.util.splitIntoTwo
 
 class FireWallConstructor(private val rawInstructionConverter: RawInstructionConverter = RawInstructionConverter()) {
 
@@ -16,8 +17,5 @@ class FireWallConstructor(private val rawInstructionConverter: RawInstructionCon
     }
 }
 
-private fun String.splitIntoTwo(delimeter: String): Pair<String, String> {
-    val split = this.split(delimeter, limit = 2)
-    return Pair(split[0], split[1])
-}
+
 
