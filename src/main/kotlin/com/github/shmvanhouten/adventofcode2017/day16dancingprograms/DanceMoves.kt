@@ -5,29 +5,29 @@ import com.github.shmvanhouten.adventofcode2017.util.splitIntoTwo
 
 interface DanceMove{
 
-    fun getMove(): (List<DanceProgram>) -> List<DanceProgram>
+    fun getMove(): (List<Char>) -> List<Char>
 }
 
 data class SpinMove(private val size: Int): DanceMove{
 
-    override fun getMove(): (List<DanceProgram>) -> List<DanceProgram> {
+    override fun getMove(): (List<Char>) -> List<Char> {
         return this::spin
     }
 
-    private fun spin(dancePrograms: List<DanceProgram>): List<DanceProgram>{
+    private fun spin(dancePrograms: List<Char>): List<Char>{
         val (firstPrograms, secondPrograms) = dancePrograms.splitIntoTwo(dancePrograms.size - size)
         return secondPrograms + firstPrograms
     }
 
 }
 
-data class ExchangeMove(val firstPosition: Int, val secondPosition: Int): DanceMove {
+data class ExchangeMove(private val firstPosition: Int, private val secondPosition: Int): DanceMove {
 
-    override fun getMove(): (List<DanceProgram>) -> List<DanceProgram> {
+    override fun getMove(): (List<Char>) -> List<Char> {
         return this::exchange
     }
 
-    private fun exchange(dancePrograms: List<DanceProgram>): List<DanceProgram> {
+    private fun exchange(dancePrograms: List<Char>): List<Char> {
         val mutableDancePrograms = dancePrograms.toMutableList()
 
         val firstProgram = mutableDancePrograms[firstPosition]
@@ -40,13 +40,13 @@ data class ExchangeMove(val firstPosition: Int, val secondPosition: Int): DanceM
     }
 }
 
-data class PartnerMove(private val firstPartner: DanceProgram, private val secondPartner: DanceProgram): DanceMove {
+data class PartnerMove(private val firstPartner: Char, private val secondPartner: Char): DanceMove {
 
-    override fun getMove(): (List<DanceProgram>) -> List<DanceProgram> {
+    override fun getMove(): (List<Char>) -> List<Char> {
         return this::partner
     }
 
-    private fun partner(dancePrograms: List<DanceProgram>): List<DanceProgram> {
+    private fun partner(dancePrograms: List<Char>): List<Char> {
         val mutableDancePrograms = dancePrograms.toMutableList()
 
         val positionOfFirstProgram = dancePrograms.indexOf(firstPartner)
@@ -56,6 +56,17 @@ data class PartnerMove(private val firstPartner: DanceProgram, private val secon
         mutableDancePrograms[positionOfSecondProgram] = firstPartner
 
         return mutableDancePrograms
+    }
+}
+
+data class CondensedDanceMove(private val move: (List<Char>, List<Int>) -> List<Char>, private val newPositionsOfPrograms: List<Int>) : DanceMove {
+
+    override fun getMove(): (List<Char>) -> List<Char> {
+        return this::moveCharactersToNewPositions
+    }
+
+    private fun moveCharactersToNewPositions(dancePrograms: List<Char>): List<Char> {
+        return move(dancePrograms, newPositionsOfPrograms)
     }
 }
 

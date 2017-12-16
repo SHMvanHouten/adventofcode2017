@@ -1,9 +1,26 @@
 package com.github.shmvanhouten.adventofcode2017.day16dancingprograms
 
-class DanceSimulator(private val danceMoveConverter: DanceMoveConverter = DanceMoveConverter()) {
+class DanceSimulator(private val converter: DanceMoveConverter = DanceMoveConverter(), private val condenser: DanceMoveCondenser = DanceMoveCondenser()) {
+
+
+    fun getOrderOfProgramsAfterXDances(rawInput: String, amountOfDancePrograms: Int, amountOfDances: Int): String {
+        var dancePrograms = getListOfDancePrograms(amountOfDancePrograms)
+
+        val danceMoves = rawInput.split(',')
+                .map { converter.parseStringToDanceMove(it) }
+
+        val amountOfDancesToReturnToOriginalState = findAmountOfDancesItTakesToGetBackToOriginalState(dancePrograms, danceMoves)
+
+        (0.until(amountOfDances % amountOfDancesToReturnToOriginalState)).forEach {
+            dancePrograms = performDanceMoves(dancePrograms, danceMoves)
+        }
+
+        return dancePrograms.joinToString("")
+    }
+
 
     fun getOrderOfProgramsAfterDance(rawInput: String, amountOfDancePrograms: Int): String {
-        val dancePrograms = ('a'..'z').toList().subList(0, amountOfDancePrograms).map { DanceProgram(it) }
+        val dancePrograms = getListOfDancePrograms(amountOfDancePrograms)
 
         val danceProgramsAfterDance = rawInput.split(',')
                 .fold(dancePrograms, { dancingPrograms, rawDanceMove -> performMove(rawDanceMove, dancingPrograms) })
@@ -11,9 +28,52 @@ class DanceSimulator(private val danceMoveConverter: DanceMoveConverter = DanceM
         return danceProgramsAfterDance.joinToString("")
     }
 
-    private fun performMove(rawDanceMove: String, dancingPrograms: List<DanceProgram>): List<DanceProgram> {
-        val danceMove = danceMoveConverter.parseStringToDanceMove(rawDanceMove)
+    private fun findAmountOfDancesItTakesToGetBackToOriginalState(originalDanceProgram: List<Char>, danceMoves: List<DanceMove>): Int {
+
+        var dancingProgram = performDanceMoves(originalDanceProgram, danceMoves)
+        var amountOfDances = 1
+
+        while (dancingProgram != originalDanceProgram) {
+            dancingProgram = performDanceMoves(dancingProgram, danceMoves)
+            amountOfDances++
+        }
+
+        println(amountOfDances)
+        return amountOfDances
+    }
+
+
+    private fun getListOfDancePrograms(amountOfDancePrograms: Int): List<Char> {
+        return ('a'..'z').toList().subList(0, amountOfDancePrograms).map { it }
+    }
+
+    private fun performMove(rawDanceMove: String, dancingPrograms: List<Char>): List<Char> {
+        val danceMove = converter.parseStringToDanceMove(rawDanceMove)
         val move = danceMove.getMove()
         return move(dancingPrograms)
     }
+
+    private fun performDanceMoves(dancePrograms: List<Char>, danceMoves: List<DanceMove>): List<Char> {
+        return danceMoves.fold(dancePrograms, { dancingPrograms, danceMove -> danceMove.getMove()(dancingPrograms) })
+    }
+
+//    private fun condenseDanceMoves(danceMoves: List<DanceMove>, dancePrograms: List<Char>): List<DanceMove> {
+//        var remainingDanceMovesToCondense = danceMoves
+//        var listOfCondensedDanceMoves = listOf<DanceMove>()
+//
+//        var nextPartnerMove = remainingDanceMovesToCondense.find { it is PartnerMove }
+//
+//        while (nextPartnerMove != null) {
+//            val indexOfPartnerMove = remainingDanceMovesToCondense.indexOf(nextPartnerMove)
+//            val movesToCondense = remainingDanceMovesToCondense.subList(0, indexOfPartnerMove)
+//            listOfCondensedDanceMoves += condenser.condenseDanceMoves(movesToCondense, dancePrograms)
+//            listOfCondensedDanceMoves += nextPartnerMove
+//            remainingDanceMovesToCondense = remainingDanceMovesToCondense.subList(indexOfPartnerMove + 1, remainingDanceMovesToCondense.size)
+//
+//            nextPartnerMove = remainingDanceMovesToCondense.find { it is PartnerMove }
+//        }
+//
+//        return listOfCondensedDanceMoves + condenser.condenseDanceMoves(remainingDanceMovesToCondense, dancePrograms)
+//    }
+
 }

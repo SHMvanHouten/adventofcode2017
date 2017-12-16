@@ -24,7 +24,7 @@ class DanceMoveConverter {
     }
 
     private fun buildPartnerMove(danceMoveParticulars: String): DanceMove {
-        return PartnerMove(DanceProgram(danceMoveParticulars[0]), DanceProgram(danceMoveParticulars[2]))
+        return PartnerMove(danceMoveParticulars[0], danceMoveParticulars[2])
     }
 }
 
