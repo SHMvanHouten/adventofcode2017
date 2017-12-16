@@ -1,5 +1,6 @@
 package com.github.shmvanhouten.adventofcode2017.day16dancingprograms
 
+// removing the condenser bugs out Intellij
 class DanceSimulator(private val converter: DanceMoveConverter = DanceMoveConverter(), private val condenser: DanceMoveCondenser = DanceMoveCondenser()) {
 
 
@@ -56,24 +57,4 @@ class DanceSimulator(private val converter: DanceMoveConverter = DanceMoveConver
     private fun performDanceMoves(dancePrograms: List<Char>, danceMoves: List<DanceMove>): List<Char> {
         return danceMoves.fold(dancePrograms, { dancingPrograms, danceMove -> danceMove.getMove()(dancingPrograms) })
     }
-
-//    private fun condenseDanceMoves(danceMoves: List<DanceMove>, dancePrograms: List<Char>): List<DanceMove> {
-//        var remainingDanceMovesToCondense = danceMoves
-//        var listOfCondensedDanceMoves = listOf<DanceMove>()
-//
-//        var nextPartnerMove = remainingDanceMovesToCondense.find { it is PartnerMove }
-//
-//        while (nextPartnerMove != null) {
-//            val indexOfPartnerMove = remainingDanceMovesToCondense.indexOf(nextPartnerMove)
-//            val movesToCondense = remainingDanceMovesToCondense.subList(0, indexOfPartnerMove)
-//            listOfCondensedDanceMoves += condenser.condenseDanceMoves(movesToCondense, dancePrograms)
-//            listOfCondensedDanceMoves += nextPartnerMove
-//            remainingDanceMovesToCondense = remainingDanceMovesToCondense.subList(indexOfPartnerMove + 1, remainingDanceMovesToCondense.size)
-//
-//            nextPartnerMove = remainingDanceMovesToCondense.find { it is PartnerMove }
-//        }
-//
-//        return listOfCondensedDanceMoves + condenser.condenseDanceMoves(remainingDanceMovesToCondense, dancePrograms)
-//    }
-
 }
