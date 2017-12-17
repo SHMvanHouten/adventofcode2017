@@ -3,6 +3,7 @@ package com.github.shmvanhouten.adventofcode2017.day16dancingprograms
 import com.github.shmvanhouten.adventofcode2017.util.rawinstructionconverter.FileReader.readFile
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
+import org.junit.Ignore
 import org.junit.Test
 
 class DanceSimulatorTest {
@@ -59,6 +60,22 @@ class DanceSimulatorTest {
         val danceSimulator = DanceSimulator()
         val danceGroupAfter1000Dances = danceSimulator
                 .getOrderOfProgramsAfterXDances(readFile("/day16/day16.txt"), 16, 1_000_000_000)
+        assertThat(danceGroupAfter1000Dances, equalTo("amkjepdhifolgncb"))
+    }
+
+    @Test
+    fun `it should find the result for running the challenge input 1_000_000 times (without cheating)`() {
+        val danceSimulator = DanceSimulator()
+        val danceGroupAfter1000Dances = danceSimulator
+                .getOrderOfProgramsAfterXDancesBruteForce(readFile("/day16/day16.txt"), 16, 1_000_000)
+        assertThat(danceGroupAfter1000Dances, equalTo("amkjepdhifolgncb"))
+    }
+
+    @Test @Ignore("should take about 50 minutes")
+    fun `it should find the result for running the challenge input 1_000_000_000 times (without cheating)`() {
+        val danceSimulator = DanceSimulator()
+        val danceGroupAfter1000Dances = danceSimulator
+                .getOrderOfProgramsAfterXDancesBruteForce(readFile("/day16/day16.txt"), 16, 1_000_000_000)
         assertThat(danceGroupAfter1000Dances, equalTo("amkjepdhifolgncb"))
     }
 

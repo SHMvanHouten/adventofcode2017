@@ -3,25 +3,25 @@ package com.github.shmvanhouten.adventofcode2017.day16dancingprograms
 import com.github.shmvanhouten.adventofcode2017.util.splitIntoTwo
 
 
-interface DanceMove{
+interface DanceMove {
 
     fun getMove(): (List<Char>) -> List<Char>
 }
 
-data class SpinMove(private val size: Int): DanceMove{
+data class SpinMove(private val size: Int) : DanceMove {
 
     override fun getMove(): (List<Char>) -> List<Char> {
         return this::spin
     }
 
-    private fun spin(dancePrograms: List<Char>): List<Char>{
+    private fun spin(dancePrograms: List<Char>): List<Char> {
         val (firstPrograms, secondPrograms) = dancePrograms.splitIntoTwo(dancePrograms.size - size)
         return secondPrograms + firstPrograms
     }
 
 }
 
-data class ExchangeMove(private val firstPosition: Int, private val secondPosition: Int): DanceMove {
+data class ExchangeMove(private val firstPosition: Int, private val secondPosition: Int) : DanceMove {
 
     override fun getMove(): (List<Char>) -> List<Char> {
         return this::exchange
@@ -40,7 +40,7 @@ data class ExchangeMove(private val firstPosition: Int, private val secondPositi
     }
 }
 
-data class PartnerMove(private val firstPartner: Char, private val secondPartner: Char): DanceMove {
+data class PartnerMove(private val firstPartner: Char, private val secondPartner: Char) : DanceMove {
 
     override fun getMove(): (List<Char>) -> List<Char> {
         return this::partner
@@ -59,3 +59,24 @@ data class PartnerMove(private val firstPartner: Char, private val secondPartner
     }
 }
 
+data class CondensedDanceMove(private val move: (List<Char>, List<Int>) -> List<Char>, private val newPositionsOfPrograms: List<Int>) : DanceMove {
+
+    override fun getMove(): (List<Char>) -> List<Char> {
+        return this::moveCharactersToNewPositions
+    }
+
+    private fun moveCharactersToNewPositions(dancePrograms: List<Char>): List<Char> {
+        return move(dancePrograms, newPositionsOfPrograms)
+    }
+}
+
+data class CondensedPartnerMove(private val move: (List<Char>, Map<Char, Char>) -> List<Char>, private val linkedPrograms: Map<Char, Char>) : DanceMove {
+
+    override fun getMove(): (List<Char>) -> List<Char> {
+        return this::moveCharactersToNewPositions
+    }
+
+    private fun moveCharactersToNewPositions(dancePrograms: List<Char>): List<Char> {
+        return move(dancePrograms, linkedPrograms)
+    }
+}

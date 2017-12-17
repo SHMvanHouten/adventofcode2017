@@ -1,15 +1,30 @@
 package com.github.shmvanhouten.adventofcode2017.day16dancingprograms
 
-class DanceSimulator(private val converter: DanceMoveConverter = DanceMoveConverter()) {
+class DanceSimulator(private val converter: DanceMoveConverter = DanceMoveConverter(), private val danceMoveCondenser: DanceMoveCondenser = DanceMoveCondenser()) {
 
+
+    fun getOrderOfProgramsAfterXDancesBruteForce(rawInput: String, amountOfDancePrograms: Int, amountOfDances: Int): String {
+        var dancePrograms = getListOfDancePrograms(amountOfDancePrograms)
+
+        val danceMoves = rawInput.split(',')
+                .map { converter.parseStringToDanceMove(it) }
+        val condensedDanceMoves = danceMoveCondenser.splitAndCondenseDanceMoves(danceMoves, dancePrograms)
+
+        (0.until(amountOfDances)).forEach {
+            dancePrograms = performDanceMoves(dancePrograms, condensedDanceMoves)
+        }
+
+        return dancePrograms.joinToString("")
+    }
 
     fun getOrderOfProgramsAfterXDances(rawInput: String, amountOfDancePrograms: Int, amountOfDances: Int): String {
         var dancePrograms = getListOfDancePrograms(amountOfDancePrograms)
 
         val danceMoves = rawInput.split(',')
                 .map { converter.parseStringToDanceMove(it) }
+        val condensedDanceMoves = danceMoveCondenser.splitAndCondenseDanceMoves(danceMoves, dancePrograms)
 
-        val amountOfDancesToReturnToOriginalState = findAmountOfDancesItTakesToGetBackToOriginalState(dancePrograms, danceMoves)
+        val amountOfDancesToReturnToOriginalState = findAmountOfDancesItTakesToGetBackToOriginalState(dancePrograms, condensedDanceMoves)
 
         (0.until(amountOfDances % amountOfDancesToReturnToOriginalState)).forEach {
             dancePrograms = performDanceMoves(dancePrograms, danceMoves)
