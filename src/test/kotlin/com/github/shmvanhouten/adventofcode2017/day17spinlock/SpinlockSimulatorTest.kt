@@ -37,7 +37,7 @@ class SpinlockSimulatorTest {
     }
 
     @Test
-    fun `it should insert a 1 through 50_000_000 stepping 376 (challenge input) times before every insert value after 0 should be 39289581`() {
+    fun `it should insert a 1 through 50_000_000 stepping 376 (challenge input) times before every insert and value after 0 should be 39289581`() {
         val simulator = SpinlockSimulator()
         assertThat(simulator.getValueAfterZero(50_000_000, 376), equalTo(39289581))
     }
