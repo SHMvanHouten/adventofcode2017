@@ -16,8 +16,8 @@ class AssemblyInstructionConverter(private val rawInstructionConverter: RawInstr
 
         if (instructionType == SOUND || instructionType == RECOVER) return AssemblyInstruction(instructionType, readlineParts[1])
 
-        val possibleFirstValue = readlineParts[1].toIntOrNull()
-        val possibleSecondValue = readlineParts[2].toIntOrNull()
+        val possibleFirstValue = readlineParts[1].toLongOrNull()
+        val possibleSecondValue = readlineParts[2].toLongOrNull()
         if(possibleFirstValue == null){
             if(possibleSecondValue == null){
                 return AssemblyInstruction(instructionType, readlineParts[1], readlineParts[2])
