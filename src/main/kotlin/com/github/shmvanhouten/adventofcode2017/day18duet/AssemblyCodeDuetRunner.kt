@@ -2,53 +2,53 @@ package com.github.shmvanhouten.adventofcode2017.day18duet
 
 import com.github.shmvanhouten.adventofcode2017.day18duet.InstructionType.*
 
-class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private val id: Long, duetAssembler: DuetAssembler) : AssemblyCodeRunner(assemblyCode) {
+class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private val id: Int, duetAssembler: DuetAssembler) : AssemblyCodeRunner(assemblyCode) {
 
     private val duetPartner by lazy {
         duetAssembler.getPartnerFor(id)
     }
 
-    private var amountOfTimesSounded = 0L
+    private var amountOfTimesSounded = 0
 
     private var isWaitingToReceive = false
 
     private var soundQueue = listOf<Long>()
 
-    private var index = 0L
+    private var index = 0
 
-    private val registers = mutableMapOf("p" to id)
+    private val registers = mutableMapOf("p" to id.toLong())
 
 
-    fun runAndGetAmountOfTimesItSoundsOff(): Long {
+    fun runAndGetAmountOfTimesItSoundsOff(): Int {
         run()
         println("program $id sounded $amountOfTimesSounded times and " +
                 "program ${duetPartner.id} sounded ${duetPartner.amountOfTimesSounded} times")
         return amountOfTimesSounded
     }
 
-    private fun run(): Long? {
+    private fun run(): Boolean {
 
         if (this.isWaitingToReceive) {
-            return null
+            return false
         }
 
         while (index < assemblyCode.size) {
-            val instruction = assemblyCode[index.toInt()]
+            val instruction = assemblyCode[index]
 
             when (instruction.instructionType) {
                 RECEIVE -> {
                     if (duetPartner.soundQueue.isNotEmpty()) {
                         registers.put(instruction.firstValue.toString(), duetPartner.getSound())
                     } else if (this.soundQueue.isNotEmpty() && duetPartner.isWaitingToReceive) {
-                        return this.getSound()
+                        return true
                     } else {
                         this.isWaitingToReceive = true
-                        val firstValueFromSoundQueue = duetPartner.run()
-                        if (firstValueFromSoundQueue != null) {
-                            registers.put(instruction.firstValue.toString(), firstValueFromSoundQueue)
+                        val partnerFilledTheirSoundQueue = duetPartner.run()
+                        if (partnerFilledTheirSoundQueue) {
+                            index--
                             this.isWaitingToReceive = false
                         } else {
-                            return null
+                            return false
                         }
                     }
                 }
@@ -62,7 +62,7 @@ class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private va
             index++
         }
 
-        return null
+        return false
     }
 
     private fun performSoundInstruction(firstValue: Any) {

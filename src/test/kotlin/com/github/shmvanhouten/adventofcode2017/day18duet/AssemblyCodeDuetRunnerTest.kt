@@ -13,7 +13,7 @@ class AssemblyCodeDuetRunnerTest {
 
         val duetAssembler = DuetAssembler(assemblyCode)
         val (_, partner1) = duetAssembler.getDuet()
-        assertThat(partner1.runAndGetAmountOfTimesItSoundsOff(), equalTo(3L))
+        assertThat(partner1.runAndGetAmountOfTimesItSoundsOff(), equalTo(3))
 
     }
 
@@ -24,7 +24,7 @@ class AssemblyCodeDuetRunnerTest {
 
         val duetAssembler = DuetAssembler(assemblyCode)
         val (_, partner1) = duetAssembler.getDuet()
-        assertThat(partner1.runAndGetAmountOfTimesItSoundsOff(), equalTo(7239L))
+        assertThat(partner1.runAndGetAmountOfTimesItSoundsOff(), equalTo(7239))
 
     }
 

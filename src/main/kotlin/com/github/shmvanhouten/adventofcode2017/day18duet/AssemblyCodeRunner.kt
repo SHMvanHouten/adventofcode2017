@@ -8,10 +8,10 @@ open class AssemblyCodeRunner(val assemblyCode: List<AssemblyInstruction>) {
         val registers = mutableMapOf<String, Long>()
 
         var lastFrequency = 0L
-        var index = 0L
+        var index = 0
 
         while (index < assemblyCode.size) {
-            val instruction = assemblyCode[index.toInt()]
+            val instruction = assemblyCode[index]
 
             when (instruction.instructionType) {
                 InstructionType.SOUND -> lastFrequency = registers.getValue(instruction.firstValue as String)
@@ -33,19 +33,19 @@ open class AssemblyCodeRunner(val assemblyCode: List<AssemblyInstruction>) {
         val firstValue = instruction.firstValue as String
         val secondValue = instruction.secondValue
         if (secondValue is Long) {
-            registers.put(firstValue , secondValue)
+            registers.put(firstValue, secondValue)
         } else {
             registers.put(firstValue, registers.getOrPut(secondValue as String, { 0 }))
         }
     }
 
-    internal fun performJumpInstruction(registers: MutableMap<String, Long>, instruction: AssemblyInstruction, index: Long): Long {
+    internal fun performJumpInstruction(registers: MutableMap<String, Long>, instruction: AssemblyInstruction, index: Int): Int {
         val checkLong = instruction.firstValue as? Long ?: registers.getValue(instruction.firstValue as String)
         val secondValue = instruction.secondValue
         if (checkLong > 0L) {
             when (secondValue) {
-                is Long -> return index + secondValue - 1
-                is String -> return index + registers.getValue(secondValue) - 1
+                is Long -> return index + secondValue.toInt() - 1
+                is String -> return index + registers.getValue(secondValue).toInt() - 1
             }
         }
         return index
@@ -69,7 +69,7 @@ open class AssemblyCodeRunner(val assemblyCode: List<AssemblyInstruction>) {
         val register = instruction.firstValue as String
         val valueToPerformOperationWith = instruction.secondValue
         when (valueToPerformOperationWith) {
-            is String -> registers.put(register, operation(registers.getOrPut(register, { 0L }), registers.getOrPut(valueToPerformOperationWith, {0})))
+            is String -> registers.put(register, operation(registers.getOrPut(register, { 0L }), registers.getOrPut(valueToPerformOperationWith, { 0 })))
             is Long -> registers.put(register, operation(registers.getOrPut(register, { 0L }), valueToPerformOperationWith))
         }
     }

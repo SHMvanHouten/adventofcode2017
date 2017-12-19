@@ -8,10 +8,10 @@ class DuetAssembler(assemblyCode: List<AssemblyInstruction>) {
         return Pair(runner0, runner1)
     }
 
-    fun getPartnerFor(id: Long): AssemblyCodeDuetRunner {
+    fun getPartnerFor(id: Int): AssemblyCodeDuetRunner {
         return when(id){
-            0L -> runner1
-            1L -> runner0
+            0 -> runner1
+            1 -> runner0
             else -> error("No more than 2 in a duet, $id is not one of two binary values")
         }
     }
