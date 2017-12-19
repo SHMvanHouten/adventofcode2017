@@ -20,7 +20,7 @@ open class AssemblyCodeRunner(val assemblyCode: List<AssemblyInstruction>) {
                 InstructionType.MULTIPLY -> performMultiplyInstruction(registers, instruction)
                 InstructionType.MODULO -> performModuloInstruction(registers, instruction)
             // firstValue for recover is always a register
-                InstructionType.RECOVER -> if (registers.getValue(instruction.firstValue as String) != 0L) return lastFrequency
+                InstructionType.RECEIVE -> if (registers.getValue(instruction.firstValue as String) != 0L) return lastFrequency
                 InstructionType.JUMP -> index = performJumpInstruction(registers, instruction, index)
             }
             index++

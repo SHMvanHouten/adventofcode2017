@@ -15,7 +15,7 @@ class AssemblyInstructionConverter(private val rawInstructionConverter: RawInstr
         val instructionType = getInstructionType(readlineParts, readline)
         val possibleFirstValue = readlineParts[1].toLongOrNull()
 
-        if (instructionType == SOUND || instructionType == RECOVER) {
+        if (instructionType == SOUND || instructionType == RECEIVE) {
             return if(possibleFirstValue == null) {
                 AssemblyInstruction(instructionType, readlineParts[1])
             } else {
@@ -41,7 +41,7 @@ class AssemblyInstructionConverter(private val rawInstructionConverter: RawInstr
             "add" -> ADD
             "mul" -> MULTIPLY
             "mod" -> MODULO
-            "rcv" -> RECOVER
+            "rcv" -> RECEIVE
             "jgz" -> JUMP
             else -> error("unknown instructionType for $readline")
         }

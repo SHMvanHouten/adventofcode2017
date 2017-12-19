@@ -12,7 +12,7 @@ class AssemblyCodeRunnerTest {
 
         val assemblyCode = listOf(AssemblyInstruction(SET, "a", 1L),
                 AssemblyInstruction(SOUND, "a"),
-                AssemblyInstruction(RECOVER, "a"))
+                AssemblyInstruction(RECEIVE, "a"))
 
         val codeRunner = AssemblyCodeRunner(assemblyCode)
         assertThat(codeRunner.recoverFrequency(), equalTo(1L))
@@ -24,7 +24,7 @@ class AssemblyCodeRunnerTest {
         val assemblyCode = listOf(AssemblyInstruction(SET, "a", 1L),
                 AssemblyInstruction(MULTIPLY, "a", 7L),
                 AssemblyInstruction(SOUND, "a"),
-                AssemblyInstruction(RECOVER, "a"))
+                AssemblyInstruction(RECEIVE, "a"))
 
         val codeRunner = AssemblyCodeRunner(assemblyCode)
         assertThat(codeRunner.recoverFrequency(), equalTo(7L))
@@ -37,7 +37,7 @@ class AssemblyCodeRunnerTest {
         val assemblyCode = listOf(AssemblyInstruction(SET, "a", 1L),
                 AssemblyInstruction(ADD, "a", 4L),
                 AssemblyInstruction(SOUND, "a"),
-                AssemblyInstruction(RECOVER, "a"))
+                AssemblyInstruction(RECEIVE, "a"))
 
         val codeRunner = AssemblyCodeRunner(assemblyCode)
         assertThat(codeRunner.recoverFrequency(), equalTo(5L))
@@ -49,7 +49,7 @@ class AssemblyCodeRunnerTest {
         val assemblyCode = listOf(AssemblyInstruction(SET, "a", 5L),
                 AssemblyInstruction(MODULO, "a", 3L),
                 AssemblyInstruction(SOUND, "a"),
-                AssemblyInstruction(RECOVER, "a"))
+                AssemblyInstruction(RECEIVE, "a"))
 
         val codeRunner = AssemblyCodeRunner(assemblyCode)
         assertThat(codeRunner.recoverFrequency(), equalTo(2L))
@@ -63,7 +63,7 @@ class AssemblyCodeRunnerTest {
                 AssemblyInstruction(JUMP, 4L, 2L),
                 AssemblyInstruction(MODULO, "a", 3L),
                 AssemblyInstruction(SOUND, "a"),
-                AssemblyInstruction(RECOVER, "a"))
+                AssemblyInstruction(RECEIVE, "a"))
 
         val codeRunner = AssemblyCodeRunner(assemblyCode)
         assertThat(codeRunner.recoverFrequency(), equalTo(5L))

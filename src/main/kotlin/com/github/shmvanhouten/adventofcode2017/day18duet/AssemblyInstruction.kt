@@ -29,7 +29,7 @@ enum class InstructionType {
     ADD,
     MULTIPLY,
     MODULO,
-    RECOVER,
+    RECEIVE,
     JUMP
 }
 //
