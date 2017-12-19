@@ -20,13 +20,13 @@ class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private va
 
 
     fun runAndGetAmountOfTimesItSoundsOff(): Int {
-        runUntilBothPartnersAreWaitingToReceive()
+        runWhileBothProgramsHaveFilledSoundQueue()
         println("program $id sounded $amountOfTimesSounded times and " +
                 "program ${duetPartner.id} sounded ${duetPartner.amountOfTimesSounded} times")
         return amountOfTimesSounded
     }
 
-    private fun runUntilBothPartnersAreWaitingToReceive(): Boolean {
+    private fun runWhileBothProgramsHaveFilledSoundQueue(): Boolean {
 
         if (this.isWaitingToReceive) {
             return false
@@ -43,7 +43,7 @@ class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private va
                         return true
                     } else {
                         this.isWaitingToReceive = true
-                        val partnerFilledTheirSoundQueue = duetPartner.runUntilBothPartnersAreWaitingToReceive()
+                        val partnerFilledTheirSoundQueue = duetPartner.runWhileBothProgramsHaveFilledSoundQueue()
                         if (partnerFilledTheirSoundQueue) {
                             index--
                             this.isWaitingToReceive = false
