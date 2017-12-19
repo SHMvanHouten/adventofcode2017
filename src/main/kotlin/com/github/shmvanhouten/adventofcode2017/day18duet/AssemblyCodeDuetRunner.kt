@@ -40,18 +40,16 @@ class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private va
                 RECOVER -> {
                     if (duetPartner.soundQueue.isNotEmpty()) {
                         registers.put(instruction.firstValue.toString(), duetPartner.getSound())
+                    } else if (this.soundQueue.isNotEmpty() && duetPartner.isWaitingToReceive) {
+                        return this.getSound()
                     } else {
-                        if (this.soundQueue.isNotEmpty() && duetPartner.isWaitingToReceive) {
-                            return this.getSound()
+                        this.isWaitingToReceive = true
+                        val firstValueFromSoundQueue = duetPartner.run()
+                        if (firstValueFromSoundQueue != null) {
+                            registers.put(instruction.firstValue.toString(), firstValueFromSoundQueue)
+                            isWaitingToReceive = false
                         } else {
-                            this.isWaitingToReceive = true
-                            val firstValueFromSoundQueue = duetPartner.run()
-                            if (firstValueFromSoundQueue != null) {
-                                registers.put(instruction.firstValue.toString(), firstValueFromSoundQueue)
-                                isWaitingToReceive = false
-                            } else {
-                                return null
-                            }
+                            return null
                         }
                     }
                 }
