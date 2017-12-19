@@ -34,23 +34,15 @@ class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private va
             val instruction = assemblyCode[index.toInt()]
 
             when (instruction.instructionType) {
-                SOUND -> {
-                    amountOfTimesSounded++
-                    soundQueue += if (instruction.firstValue is Long) {
-                        instruction.firstValue
-                    } else {
-                        registers.getOrPut(instruction.firstValue as String, { 0 })
-                    }
-                }
             // firstValue for recover is always a register
                 RECOVER -> {
                     if (duetPartner.soundQueue.isNotEmpty()) {
                         registers.put(instruction.firstValue.toString(), duetPartner.getSound())
                     } else if (this.soundQueue.isNotEmpty()) {
-                        if(duetPartner.isWaitingToReceive) {
+                        if (duetPartner.isWaitingToReceive) {
                             duetPartner.isWaitingToReceive = false
                             return this.getSound()
-                        } else{
+                        } else {
                             duetPartner.run()
                         }
                     } else {
@@ -64,6 +56,7 @@ class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private va
                         }
                     }
                 }
+                SOUND -> performSoundInstruction(instruction.firstValue)
                 SET -> performSetInstruction(registers, instruction)
                 ADD -> performAddInstruction(registers, instruction)
                 MULTIPLY -> performMultiplyInstruction(registers, instruction)
@@ -74,6 +67,11 @@ class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private va
         }
 
         return null
+    }
+
+    private fun performSoundInstruction(firstValue: Any) {
+        amountOfTimesSounded++
+        soundQueue += firstValue as? Long ?: registers.getOrPut(firstValue as String, { 0 })
     }
 
     private fun getSound(): Long {
