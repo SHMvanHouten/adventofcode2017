@@ -8,7 +8,7 @@ class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private va
         duetAssembler.getPartnerFor(id)
     }
 
-    var amountOfTimesSounded = 0L
+    private var amountOfTimesSounded = 0L
 
     private var isWaitingToReceive = false
 
@@ -18,51 +18,15 @@ class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private va
 
     private val registers = mutableMapOf("p" to id)
 
-    override fun recoverFrequency(): Long? {
-        return null
-    }
 
-    fun getAmountOfTimesThisRunnerWillSound(): Long? {
-        while (index < assemblyCode.size) {
-            val instruction = assemblyCode[index.toInt()]
-
-            when (instruction.instructionType) {
-                SOUND -> {
-                    amountOfTimesSounded++
-                    if (instruction.firstValue is Long) {
-                        soundQueue += instruction.firstValue
-                    } else {
-                        soundQueue += registers.getOrPut(instruction.firstValue as String, { 0 })
-                    }
-                }
-                SET -> performSetInstruction(registers, instruction)
-                ADD -> performAddInstruction(registers, instruction)
-                MULTIPLY -> performMultiplyInstruction(registers, instruction)
-                MODULO -> performModuloInstruction(registers, instruction)
-            // firstValue for recover is always a register
-                RECOVER -> {
-                    if (duetPartner.soundQueue.isNotEmpty()) {
-                        registers.put(instruction.firstValue.toString(), duetPartner.getSound())
-                    } else {
-                        val nextSound = duetPartner.getNextSound()
-                        if (nextSound == null) {
-                            return amountOfTimesSounded
-                        } else {
-                            registers.put(instruction.firstValue.toString(), nextSound)
-                        }
-                    }
-                }
-                JUMP -> index = performJumpInstruction(registers, instruction, index)
-            }
-            index++
-        }
-
+    fun runAndGetAmountOfTimesItSoundsOff(): Long {
+        run()
         return amountOfTimesSounded
     }
 
-    private fun getNextSound(): Long? {
+    private fun run(): Long? {
 
-        if(this.isWaitingToReceive){
+        if (this.isWaitingToReceive) {
             return null
         }
 
@@ -71,26 +35,32 @@ class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private va
 
             when (instruction.instructionType) {
                 SOUND -> {
-                    println("${this.id} sounded ${instruction.firstValue}")
-                    index++
                     amountOfTimesSounded++
-                    if (instruction.firstValue is Long) {
-                        return instruction.firstValue
+                    soundQueue += if (instruction.firstValue is Long) {
+                        instruction.firstValue
+                    } else {
+                        registers.getOrPut(instruction.firstValue as String, { 0 })
                     }
-                    return registers.getOrPut(instruction.firstValue as String, { 0 })
                 }
             // firstValue for recover is always a register
                 RECOVER -> {
                     if (duetPartner.soundQueue.isNotEmpty()) {
                         registers.put(instruction.firstValue.toString(), duetPartner.getSound())
+                    } else if (this.soundQueue.isNotEmpty()) {
+                        if(duetPartner.isWaitingToReceive) {
+                            duetPartner.isWaitingToReceive = false
+                            return this.getSound()
+                        } else{
+                            duetPartner.run()
+                        }
                     } else {
                         isWaitingToReceive = true
-                        val nextSound = duetPartner.getNextSound()
-                        if (nextSound == null) {
-                            index++
-                            return null
+                        val firstValueFromSoundQueue = duetPartner.run()
+                        if (firstValueFromSoundQueue != null) {
+                            registers.put(instruction.firstValue.toString(), firstValueFromSoundQueue)
+                            isWaitingToReceive = false
                         } else {
-                            registers.put(instruction.firstValue.toString(), nextSound)
+                            return null
                         }
                     }
                 }
@@ -106,14 +76,10 @@ class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private va
         return null
     }
 
-    fun getSound(): Long {
+    private fun getSound(): Long {
         val sound = soundQueue.first()
         soundQueue -= sound
         return sound
     }
-}
 
-enum class ProgramId {
-    ZERO,
-    ONE
 }

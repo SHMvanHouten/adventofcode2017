@@ -5,7 +5,7 @@ import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import org.junit.Test
 
-class AssemblyCodeSoloRunnerTest {
+class AssemblyCodeRunnerTest {
 
     @Test
     fun `it should SET registry a to 1 SOUND it, and RECOVER it`() {
@@ -14,7 +14,7 @@ class AssemblyCodeSoloRunnerTest {
                 AssemblyInstruction(SOUND, "a"),
                 AssemblyInstruction(RECOVER, "a"))
 
-        val codeRunner = AssemblyCodeSoloRunner(assemblyCode)
+        val codeRunner = AssemblyCodeRunner(assemblyCode)
         assertThat(codeRunner.recoverFrequency(), equalTo(1L))
 
     }
@@ -26,7 +26,7 @@ class AssemblyCodeSoloRunnerTest {
                 AssemblyInstruction(SOUND, "a"),
                 AssemblyInstruction(RECOVER, "a"))
 
-        val codeRunner = AssemblyCodeSoloRunner(assemblyCode)
+        val codeRunner = AssemblyCodeRunner(assemblyCode)
         assertThat(codeRunner.recoverFrequency(), equalTo(7L))
 
     }
@@ -39,7 +39,7 @@ class AssemblyCodeSoloRunnerTest {
                 AssemblyInstruction(SOUND, "a"),
                 AssemblyInstruction(RECOVER, "a"))
 
-        val codeRunner = AssemblyCodeSoloRunner(assemblyCode)
+        val codeRunner = AssemblyCodeRunner(assemblyCode)
         assertThat(codeRunner.recoverFrequency(), equalTo(5L))
 
     }
@@ -51,7 +51,7 @@ class AssemblyCodeSoloRunnerTest {
                 AssemblyInstruction(SOUND, "a"),
                 AssemblyInstruction(RECOVER, "a"))
 
-        val codeRunner = AssemblyCodeSoloRunner(assemblyCode)
+        val codeRunner = AssemblyCodeRunner(assemblyCode)
         assertThat(codeRunner.recoverFrequency(), equalTo(2L))
 
     }
@@ -65,7 +65,7 @@ class AssemblyCodeSoloRunnerTest {
                 AssemblyInstruction(SOUND, "a"),
                 AssemblyInstruction(RECOVER, "a"))
 
-        val codeRunner = AssemblyCodeSoloRunner(assemblyCode)
+        val codeRunner = AssemblyCodeRunner(assemblyCode)
         assertThat(codeRunner.recoverFrequency(), equalTo(5L))
 
     }
@@ -75,7 +75,7 @@ class AssemblyCodeSoloRunnerTest {
         val converter = AssemblyInstructionConverter()
         val assemblyCode = converter.parseAssemblyCodeFromString("/day18/testInput.txt")
 
-        val codeRunner = AssemblyCodeSoloRunner(assemblyCode)
+        val codeRunner = AssemblyCodeRunner(assemblyCode)
         assertThat(codeRunner.recoverFrequency(), equalTo(4L))
     }
 
@@ -84,7 +84,7 @@ class AssemblyCodeSoloRunnerTest {
         val converter = AssemblyInstructionConverter()
         val assemblyCode = converter.parseAssemblyCodeFromString("/day18/day18.txt")
 
-        val codeRunner = AssemblyCodeSoloRunner(assemblyCode)
+        val codeRunner = AssemblyCodeRunner(assemblyCode)
         assertThat(codeRunner.recoverFrequency()!!, equalTo(8600L))
     }
 }

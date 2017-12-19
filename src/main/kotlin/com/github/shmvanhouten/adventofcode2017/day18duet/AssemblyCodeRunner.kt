@@ -1,8 +1,33 @@
 package com.github.shmvanhouten.adventofcode2017.day18duet
 
 
-abstract class AssemblyCodeRunner(val assemblyCode: List<AssemblyInstruction>) {
-    abstract fun recoverFrequency(): Long?
+open class AssemblyCodeRunner(val assemblyCode: List<AssemblyInstruction>) {
+
+    fun recoverFrequency(): Long? {
+
+        val registers = mutableMapOf<String, Long>()
+
+        var lastFrequency = 0L
+        var index = 0L
+
+        while (index < assemblyCode.size) {
+            val instruction = assemblyCode[index.toInt()]
+
+            when (instruction.instructionType) {
+                InstructionType.SOUND -> lastFrequency = registers.getValue(instruction.firstValue as String)
+                InstructionType.SET -> performSetInstruction(registers, instruction)
+                InstructionType.ADD -> performAddInstruction(registers, instruction)
+                InstructionType.MULTIPLY -> performMultiplyInstruction(registers, instruction)
+                InstructionType.MODULO -> performModuloInstruction(registers, instruction)
+            // firstValue for recover is always a register
+                InstructionType.RECOVER -> if (registers.getValue(instruction.firstValue as String) != 0L) return lastFrequency
+                InstructionType.JUMP -> index = performJumpInstruction(registers, instruction, index)
+            }
+            index++
+        }
+
+        return null
+    }
 
     internal fun performSetInstruction(registers: MutableMap<String, Long>, instruction: AssemblyInstruction) {
         val firstValue = instruction.firstValue as String

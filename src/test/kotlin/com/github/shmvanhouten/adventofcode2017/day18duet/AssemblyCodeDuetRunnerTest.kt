@@ -12,10 +12,8 @@ class AssemblyCodeDuetRunnerTest {
         val assemblyCode = converter.parseAssemblyCodeFromString("/day18/part2TestInput.txt")
 
         val duetAssembler = DuetAssembler(assemblyCode)
-        val (partner0, partner1) = duetAssembler.getDuet()
-        println(partner1.getAmountOfTimesThisRunnerWillSound())
-        println(partner0.amountOfTimesSounded)
-        assertThat(partner1.amountOfTimesSounded, equalTo(3L))
+        val (_, partner1) = duetAssembler.getDuet()
+        assertThat(partner1.runAndGetAmountOfTimesItSoundsOff(), equalTo(3L))
 
     }
 
@@ -26,8 +24,7 @@ class AssemblyCodeDuetRunnerTest {
 
         val duetAssembler = DuetAssembler(assemblyCode)
         val (_, partner1) = duetAssembler.getDuet()
-        partner1.getAmountOfTimesThisRunnerWillSound()
-        assertThat(partner1.amountOfTimesSounded, equalTo(7239L))
+        assertThat(partner1.runAndGetAmountOfTimesItSoundsOff(), equalTo(7239L))
 
     }
 
