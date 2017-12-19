@@ -13,10 +13,16 @@ class AssemblyInstructionConverter(private val rawInstructionConverter: RawInstr
         val readlineParts = readline.split(" ")
 
         val instructionType = getInstructionType(readlineParts, readline)
-
-        if (instructionType == SOUND || instructionType == RECOVER) return AssemblyInstruction(instructionType, readlineParts[1])
-
         val possibleFirstValue = readlineParts[1].toLongOrNull()
+
+        if (instructionType == SOUND || instructionType == RECOVER) {
+            return if(possibleFirstValue == null) {
+                AssemblyInstruction(instructionType, readlineParts[1])
+            } else {
+                AssemblyInstruction(instructionType, possibleFirstValue)
+            }
+        }
+
         val possibleSecondValue = readlineParts[2].toLongOrNull()
         if(possibleFirstValue == null){
             if(possibleSecondValue == null){

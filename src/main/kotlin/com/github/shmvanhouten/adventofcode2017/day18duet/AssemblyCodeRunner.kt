@@ -1,8 +1,8 @@
 package com.github.shmvanhouten.adventofcode2017.day18duet
 
 
-abstract class AssemblyCodeRunner {
-    abstract fun recoverFrequency(assemblyCode: List<AssemblyInstruction>): Long?
+abstract class AssemblyCodeRunner(val assemblyCode: List<AssemblyInstruction>) {
+    abstract fun recoverFrequency(): Long?
 
     internal fun performSetInstruction(registers: MutableMap<String, Long>, instruction: AssemblyInstruction) {
         val firstValue = instruction.firstValue as String
@@ -44,7 +44,7 @@ abstract class AssemblyCodeRunner {
         val register = instruction.firstValue as String
         val valueToPerformOperationWith = instruction.secondValue
         when (valueToPerformOperationWith) {
-            is String -> registers.put(register, operation(registers.getOrPut(register, { 0L }), registers.getValue(valueToPerformOperationWith)))
+            is String -> registers.put(register, operation(registers.getOrPut(register, { 0L }), registers.getOrPut(valueToPerformOperationWith, {0})))
             is Long -> registers.put(register, operation(registers.getOrPut(register, { 0L }), valueToPerformOperationWith))
         }
     }

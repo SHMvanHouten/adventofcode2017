@@ -9,58 +9,55 @@ class AssemblyCodeSoloRunnerTest {
 
     @Test
     fun `it should SET registry a to 1 SOUND it, and RECOVER it`() {
-        val codeRunner = AssemblyCodeSoloRunner()
 
         val assemblyCode = listOf(AssemblyInstruction(SET, "a", 1L),
                 AssemblyInstruction(SOUND, "a"),
                 AssemblyInstruction(RECOVER, "a"))
 
-        assertThat(codeRunner.recoverFrequency(assemblyCode), equalTo(1L))
+        val codeRunner = AssemblyCodeSoloRunner(assemblyCode)
+        assertThat(codeRunner.recoverFrequency(), equalTo(1L))
 
     }
 
     @Test
     fun `it should SET registry a to 1 MULTIPLY it by 7, SOUND it, and RECOVER it`() {
-        val codeRunner = AssemblyCodeSoloRunner()
-
         val assemblyCode = listOf(AssemblyInstruction(SET, "a", 1L),
                 AssemblyInstruction(MULTIPLY, "a", 7L),
                 AssemblyInstruction(SOUND, "a"),
                 AssemblyInstruction(RECOVER, "a"))
 
-        assertThat(codeRunner.recoverFrequency(assemblyCode), equalTo(7L))
+        val codeRunner = AssemblyCodeSoloRunner(assemblyCode)
+        assertThat(codeRunner.recoverFrequency(), equalTo(7L))
 
     }
 
     @Test
     fun `it should SET registry a to 1 ADD 4 to it, SOUND it, and RECOVER it`() {
-        val codeRunner = AssemblyCodeSoloRunner()
 
         val assemblyCode = listOf(AssemblyInstruction(SET, "a", 1L),
                 AssemblyInstruction(ADD, "a", 4L),
                 AssemblyInstruction(SOUND, "a"),
                 AssemblyInstruction(RECOVER, "a"))
 
-        assertThat(codeRunner.recoverFrequency(assemblyCode), equalTo(5L))
+        val codeRunner = AssemblyCodeSoloRunner(assemblyCode)
+        assertThat(codeRunner.recoverFrequency(), equalTo(5L))
 
     }
 
     @Test
     fun `it should SET registry a to 5, MODULO 3 it, SOUND it, and RECOVER it`() {
-        val codeRunner = AssemblyCodeSoloRunner()
-
         val assemblyCode = listOf(AssemblyInstruction(SET, "a", 5L),
                 AssemblyInstruction(MODULO, "a", 3L),
                 AssemblyInstruction(SOUND, "a"),
                 AssemblyInstruction(RECOVER, "a"))
 
-        assertThat(codeRunner.recoverFrequency(assemblyCode), equalTo(2L))
+        val codeRunner = AssemblyCodeSoloRunner(assemblyCode)
+        assertThat(codeRunner.recoverFrequency(), equalTo(2L))
 
     }
 
     @Test
     fun `it should SET registry a to 5, jump 2, SOUND a, and RECOVER the sound`() {
-        val codeRunner = AssemblyCodeSoloRunner()
 
         val assemblyCode = listOf(AssemblyInstruction(SET, "a", 5L),
                 AssemblyInstruction(JUMP, 4L, 2L),
@@ -68,7 +65,8 @@ class AssemblyCodeSoloRunnerTest {
                 AssemblyInstruction(SOUND, "a"),
                 AssemblyInstruction(RECOVER, "a"))
 
-        assertThat(codeRunner.recoverFrequency(assemblyCode), equalTo(5L))
+        val codeRunner = AssemblyCodeSoloRunner(assemblyCode)
+        assertThat(codeRunner.recoverFrequency(), equalTo(5L))
 
     }
 
@@ -77,8 +75,8 @@ class AssemblyCodeSoloRunnerTest {
         val converter = AssemblyInstructionConverter()
         val assemblyCode = converter.parseAssemblyCodeFromString("/day18/testInput.txt")
 
-        val codeRunner = AssemblyCodeSoloRunner()
-        assertThat(codeRunner.recoverFrequency(assemblyCode), equalTo(4L))
+        val codeRunner = AssemblyCodeSoloRunner(assemblyCode)
+        assertThat(codeRunner.recoverFrequency(), equalTo(4L))
     }
 
     @Test
@@ -86,7 +84,7 @@ class AssemblyCodeSoloRunnerTest {
         val converter = AssemblyInstructionConverter()
         val assemblyCode = converter.parseAssemblyCodeFromString("/day18/day18.txt")
 
-        val codeRunner = AssemblyCodeSoloRunner()
-        assertThat(codeRunner.recoverFrequency(assemblyCode)!!, equalTo(8600L))
+        val codeRunner = AssemblyCodeSoloRunner(assemblyCode)
+        assertThat(codeRunner.recoverFrequency()!!, equalTo(8600L))
     }
 }

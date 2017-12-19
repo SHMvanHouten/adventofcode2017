@@ -2,9 +2,10 @@ package com.github.shmvanhouten.adventofcode2017.day18duet
 
 import com.github.shmvanhouten.adventofcode2017.day18duet.InstructionType.*
 
-class AssemblyCodeSoloRunner : AssemblyCodeRunner() {
+class AssemblyCodeSoloRunner(assemblyCode: List<AssemblyInstruction>) : AssemblyCodeRunner(assemblyCode) {
 
-    override fun recoverFrequency(assemblyCode: List<AssemblyInstruction>): Long? {
+
+    override fun recoverFrequency(): Long? {
 
         val registers = mutableMapOf<String, Long>()
 
