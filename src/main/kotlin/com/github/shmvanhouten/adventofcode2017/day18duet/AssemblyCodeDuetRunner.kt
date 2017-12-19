@@ -21,6 +21,8 @@ class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private va
 
     fun runAndGetAmountOfTimesItSoundsOff(): Long {
         run()
+        println("program $id sounded $amountOfTimesSounded times and " +
+                "program ${duetPartner.id} sounded ${duetPartner.amountOfTimesSounded} times")
         return amountOfTimesSounded
     }
 
@@ -38,21 +40,18 @@ class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private va
                 RECOVER -> {
                     if (duetPartner.soundQueue.isNotEmpty()) {
                         registers.put(instruction.firstValue.toString(), duetPartner.getSound())
-                    } else if (this.soundQueue.isNotEmpty()) {
-                        if (duetPartner.isWaitingToReceive) {
-                            duetPartner.isWaitingToReceive = false
+                    } else {
+                        if (this.soundQueue.isNotEmpty() && duetPartner.isWaitingToReceive) {
                             return this.getSound()
                         } else {
-                            duetPartner.run()
-                        }
-                    } else {
-                        isWaitingToReceive = true
-                        val firstValueFromSoundQueue = duetPartner.run()
-                        if (firstValueFromSoundQueue != null) {
-                            registers.put(instruction.firstValue.toString(), firstValueFromSoundQueue)
-                            isWaitingToReceive = false
-                        } else {
-                            return null
+                            this.isWaitingToReceive = true
+                            val firstValueFromSoundQueue = duetPartner.run()
+                            if (firstValueFromSoundQueue != null) {
+                                registers.put(instruction.firstValue.toString(), firstValueFromSoundQueue)
+                                isWaitingToReceive = false
+                            } else {
+                                return null
+                            }
                         }
                     }
                 }
