@@ -28,24 +28,23 @@ class PacketPathFinder(private val routingDiagram: RoutingDiagram) {
             when (currentCoordinate.type) {
                 WAY_POINT -> wayPointsBuilder.append(currentCoordinate.name)
                 TURN -> directionPointed = getNewDirection(directionPointed, currentCoordinate.coordinate)
-                PATH -> {
-                }// do nothing
+                PATH -> {}// do nothing
             }
-            val possibleNextCoordinate = routingDiagram
-                    .getComponentAt(currentCoordinate.coordinate.getNeighbour(directionPointed))
-            if (possibleNextCoordinate == null) {
+            val possibleNextCoordinate = currentCoordinate.coordinate.getNeighbour(directionPointed)
+
+            if (!routingDiagram.componentIsPresent(possibleNextCoordinate)) {
                 return Pair(wayPointsBuilder.toString(), stepsTaken)
             } else {
-                currentCoordinate = possibleNextCoordinate
+                currentCoordinate = routingDiagram.getComponentAt(possibleNextCoordinate)
             }
         }
     }
 
     private fun getNewDirection(directionPointed: Direction, currentCoordinate: Coordinate): Direction {
-        val component = routingDiagram.getComponentAt(currentCoordinate.getNeighbour(directionPointed.turnLeft()))
-        return if(component != null){
+        val toTheLeft = currentCoordinate.getNeighbour(directionPointed.turnLeft())
+        return if (routingDiagram.componentIsPresent(toTheLeft)) {
             directionPointed.turnLeft()
-        } else{
+        } else {
             directionPointed.turnRight()
         }
     }

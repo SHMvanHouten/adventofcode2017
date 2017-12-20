@@ -7,7 +7,10 @@ import com.github.shmvanhouten.adventofcode2017.util.rawinstructionconverter.Raw
 class RoutingDiagramBuilder(private val instructionConverter: RawInstructionConverter = RawInstructionConverter()) {
 
     fun build(path: String): RoutingDiagram {
-        val components = instructionConverter.convertIndexedRawInputIntoInstructions(path, this::convertRow).flatMap { it }.toSet()
+        val components = instructionConverter
+                .convertIndexedRawInputIntoInstructions(path, this::convertRow)
+                .flatMap { it }
+                .associateBy({it.coordinate}, {it})
         return RoutingDiagram(components)
     }
 

@@ -12,7 +12,7 @@ class RoutingDiagramBuilderTest {
     fun `it should convert the raw testDiagram to a RoutingDiagram`() {
         val diagramBuilder = RoutingDiagramBuilder()
         val routingDiagram = diagramBuilder.build("/day19/challengeTest.txt")
-        val diagramComponent = routingDiagram.components.find { it.coordinate == Coordinate(5, 2) }!!
+        val diagramComponent = routingDiagram.getComponentAt( Coordinate(5, 2))
         assertThat(diagramComponent.name, equalTo('A'))
         assertThat(diagramComponent.type, equalTo(WAY_POINT))
     }

@@ -2,13 +2,17 @@ package com.github.shmvanhouten.adventofcode2017.day19packettubes
 
 import com.github.shmvanhouten.adventofcode2017.day03spiralmemory.Coordinate
 
-class RoutingDiagram(val components: Set<DiagramComponent>) {
+class RoutingDiagram(private val components: Map<Coordinate, DiagramComponent>) {
 
     fun getStartingPoint(): DiagramComponent {
-        return components.find { it.coordinate.y == 0 }!!
+        return components.values.find { it.coordinate.y == 0 }!!
     }
 
-    fun getComponentAt(coordinate: Coordinate): DiagramComponent? {
-        return components.find { it.coordinate == coordinate }
+    fun componentIsPresent(coordinate: Coordinate): Boolean {
+        return components.containsKey(coordinate)
+    }
+
+    fun getComponentAt(coordinate: Coordinate): DiagramComponent {
+        return components.getValue(coordinate)
     }
 }
