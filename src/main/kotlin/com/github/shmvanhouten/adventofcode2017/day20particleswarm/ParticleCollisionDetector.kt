@@ -6,22 +6,29 @@ class ParticleCollisionDetector(private val coordinateToParticles: Map<Coordinat
         var particlesMap = coordinateToParticles
 
         0.until(amountOfIterations).forEach {
-            var newParticlesMap = mapOf<Coordinate, Particle>()
-            var deleteParticles = mapOf<Coordinate, Particle>()
-
-            particlesMap.values.forEach { oldParticle ->
-                val advancedParticle = advanceTick(oldParticle)
-                val location = advancedParticle.location
-                if (newParticlesMap.contains(location) || deleteParticles.contains(location)) {
-                    deleteParticles += location to advancedParticle
-                    newParticlesMap -= location
-                } else {
-                    newParticlesMap += location to advancedParticle
-                }
-                particlesMap = newParticlesMap
-            }
+            particlesMap = updateUnCollidedParticles(particlesMap)
         }
         return particlesMap.size
+    }
+
+    private fun updateUnCollidedParticles(oldParticles: Map<Coordinate, Particle>): Map<Coordinate, Particle> {
+        var particles = oldParticles
+
+        var newParticlesMap = mapOf<Coordinate, Particle>()
+        var deleteParticles = mapOf<Coordinate, Particle>()
+
+        particles.values.forEach { oldParticle ->
+            val advancedParticle = advanceTick(oldParticle)
+            val location = advancedParticle.location
+            if (newParticlesMap.contains(location) || deleteParticles.contains(location)) {
+                deleteParticles += location to advancedParticle
+                newParticlesMap -= location
+            } else {
+                newParticlesMap += location to advancedParticle
+            }
+            particles = newParticlesMap
+        }
+        return particles
     }
 
     private fun advanceTick(particle: Particle): Particle {
