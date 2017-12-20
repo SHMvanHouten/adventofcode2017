@@ -16,6 +16,20 @@ class RawInstructionConverter {
         return listOfInstructions
     }
 
+    fun <T> convertIndexedRawInputIntoInstructions(relativePath: String, convertLine: (String, Int) -> T): List<T> {
+        val listOfInstructions = mutableListOf<T>()
+
+        val inputStream = this::class.java.getResourceAsStream(relativePath)
+        inputStream.bufferedReader()
+                .useLines { lines ->
+                    lines.forEachIndexed { index , line ->
+                        listOfInstructions.add(convertLine(line, index))
+                    }
+                }
+
+        return listOfInstructions
+    }
+
 }
 
 object FileReader {

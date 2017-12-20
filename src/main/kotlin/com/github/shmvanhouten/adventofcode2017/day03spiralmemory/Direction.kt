@@ -14,6 +14,14 @@ enum class Direction {
             Direction.values()[this.ordinal - 1]
         }
     }
+
+    fun turnRight(): Direction {
+        return if (this == WEST) {
+            NORTH
+        } else {
+            Direction.values()[this.ordinal + 1]
+        }
+    }
 }
 
 enum class RelativePosition(val coordinate: Coordinate) {
