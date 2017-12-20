@@ -29,7 +29,7 @@ class ParticleComparatorTest {
     fun `it should solve the challenge input`() {
         val swarmBuilder = ParticleSwarmBuilder()
         val sortedParticles = swarmBuilder.build("/day20/day20.txt").sortedWith(ParticleComparator)
-        assertThat(sortedParticles.first().number, equalTo(2))
+        assertThat(sortedParticles.first().number, equalTo(125))
     }
 
 

@@ -8,7 +8,13 @@ class ParticleSwarmBuilder(private val rawInstructionConverter: RawInstructionCo
         return rawInstructionConverter.convertIndexedRawInputIntoInstructions(path, this::buildParticle)
     }
 
-    private fun buildParticle(readline: String, particleNumber: Int): Particle{
+    fun buildLocationToParticleMap(path: String): Map<Coordinate, Particle> {
+        val coordinateToParticleMap = build(path).associateBy({ it.location }, { it })
+        println("built map of size: ${coordinateToParticleMap.size}")
+        return coordinateToParticleMap
+    }
+
+    private fun buildParticle(readline: String, particleNumber: Int): Particle {
         val coordinates = readline.split(" ")
                 .map { convertToCoordinate(it) }
         return Particle(particleNumber, coordinates[0], coordinates[1], coordinates[2])

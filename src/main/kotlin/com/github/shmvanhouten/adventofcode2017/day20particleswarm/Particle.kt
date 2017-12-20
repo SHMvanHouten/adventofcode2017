@@ -11,4 +11,11 @@ data class Coordinate(val x: Int, val y: Int, val z: Int):Comparable<Coordinate>
         val totalValueOfOther = other.x.absoluteValue + other.y.absoluteValue + other.z.absoluteValue
         return totalValueOfThis.compareTo(totalValueOfOther)
     }
+
+    operator fun plus(otherCoordinate: Coordinate): Coordinate {
+        val x = this.x + otherCoordinate.x
+        val y = this.y + otherCoordinate.y
+        val z = this.z + otherCoordinate.z
+        return Coordinate(x, y, z)
+    }
 }
