@@ -1,11 +1,22 @@
 package com.github.shmvanhouten.adventofcode2017.day21fractalart
 
-interface Pattern {
-    val gridLayout: List<List<Char>>
+data class Pattern(val gridLayout: List<List<Char>>) {
+    fun flipped(): Pattern {
+        return Pattern(gridLayout.map { it.reversed() })
+    }
+
+    fun rotated(): Pattern {
+        val newRows = MutableList(gridLayout.size, {_ ->
+            mutableListOf<Char>()
+        })
+
+        gridLayout.reversed().forEach { oldRow ->
+            oldRow.forEachIndexed { index, char ->
+                newRows[index].add(char)
+            }
+        }
+
+        return Pattern(newRows)
+
+    }
 }
-
-data class SquarePattern(override val gridLayout: List<List<Char>>): Pattern
-
-data class ThreeByThreePattern(override val gridLayout: List<List<Char>>): Pattern
-
-data class FourByFourPattern(override val gridLayout: List<List<Char>>): Pattern
