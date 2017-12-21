@@ -20,19 +20,16 @@ class ArtGenerator(private val ruleBook: Map<Pattern, Pattern>) {
 
     private fun redrawGrid(grid: List<List<Char>>): List<List<Char>> {
         val patternGrid = breakGridUpIntoPatterns(grid)
-        val newGrid = mutableListOf<List<Char>>()
-        patternGrid.forEach { row ->
-            turnRowOfPatternsIntoRowsOfPixels(row).forEach { newGrid.add(it) }
-        }
-        return newGrid
+
+        return patternGrid.flatMap { turnRowOfPatternsIntoRowsOfPixels(it) }
     }
 
     private fun turnRowOfPatternsIntoRowsOfPixels(patternRow: List<Pattern>): List<List<Char>> {
         val listOfPatternGrids = patternRow.map { turnInputPatternIntoOutputPattern(it) }
-        val gridRow = MutableList(listOfPatternGrids[0].size, {_ -> mutableListOf<Char>()})
+        val gridRow = MutableList(listOfPatternGrids[0].size, { _ -> mutableListOf<Char>() })
         listOfPatternGrids.forEach { outputGrid ->
             outputGrid.forEachIndexed { index, list ->
-                list.forEach { gridRow[index].add(it) }
+                gridRow[index].addAll(list)
             }
         }
         return gridRow
@@ -51,8 +48,8 @@ class ArtGenerator(private val ruleBook: Map<Pattern, Pattern>) {
             val patternRow = mutableListOf<Pattern>()
             0.until(artGridSize).step(patternSize).forEach { x ->
                 val pattern = MutablePattern()
-                0.until(patternSize).forEach { yExtra ->
-                    pattern.addRow(artGrid[y + yExtra].subList(x, x + patternSize))
+                0.until(patternSize).forEach { patternRow ->
+                    pattern.addRow(artGrid[y + patternRow].subList(x, x + patternSize))
                 }
                 patternRow.add(pattern.toPattern())
             }

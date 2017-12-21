@@ -4,7 +4,7 @@ import com.github.shmvanhouten.adventofcode2017.util.rawinstructionconverter.Raw
 
 class RuleBookBuilder(private val rawInstructionConverter: RawInstructionConverter = RawInstructionConverter()) {
 
-    fun buildAllPossibleRulesFromRawInput(path: String): Map<Pattern, Pattern> {
+    fun buildExtendedRuleBook(path: String): Map<Pattern, Pattern> {
         return rawInstructionConverter.convertRawInputIntoInstructions(path, this::parseInputPatternAndRule)
                 .flatMap { extractAllInputPatterns(it) }
                 .toMap()
