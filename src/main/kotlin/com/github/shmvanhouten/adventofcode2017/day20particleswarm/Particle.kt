@@ -2,8 +2,7 @@ package com.github.shmvanhouten.adventofcode2017.day20particleswarm
 
 import kotlin.math.absoluteValue
 
-data class Particle(val number: Int, val location: Coordinate, val velocity: Coordinate, val acceleration: Coordinate){
-}
+data class Particle(val number: Int, val location: Coordinate, val velocity: Coordinate, val acceleration: Coordinate)
 
 data class Coordinate(val x: Int, val y: Int, val z: Int):Comparable<Coordinate> {
     override fun compareTo(other: Coordinate): Int {
