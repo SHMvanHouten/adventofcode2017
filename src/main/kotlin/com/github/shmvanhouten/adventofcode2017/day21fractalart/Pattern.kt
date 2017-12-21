@@ -20,3 +20,13 @@ data class Pattern(val gridLayout: List<List<Char>>) {
 
     }
 }
+data class MutablePattern(var gridLayout: MutableList<List<Char>> = mutableListOf()) {
+
+    fun addRow(chars: List<Char>){
+        gridLayout.add(chars)
+    }
+
+    fun toPattern(): Pattern {
+        return Pattern(gridLayout)
+    }
+}

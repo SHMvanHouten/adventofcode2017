@@ -4,13 +4,13 @@ import com.github.shmvanhouten.adventofcode2017.util.rawinstructionconverter.Raw
 
 class RuleBookBuilder(private val rawInstructionConverter: RawInstructionConverter = RawInstructionConverter()) {
 
-    fun buildAllPossibleRulesFromRawInput(path: String): Map<Pattern, Iterable<Pattern>> {
+    fun buildAllPossibleRulesFromRawInput(path: String): Map<Pattern, Pattern> {
         return rawInstructionConverter.convertRawInputIntoInstructions(path, this::parseInputPatternAndRule)
-                .map { extractAllInputPatterns(it) }
+                .flatMap { extractAllInputPatterns(it) }
                 .toMap()
     }
 
-    private fun extractAllInputPatterns(inputPatternToRulePattern: Pair<Pattern, Pattern>): Pair<Pattern, Iterable<Pattern>> {
+    private fun extractAllInputPatterns(inputPatternToRulePattern: Pair<Pattern, Pattern>): List<Pair<Pattern, Pattern>> {
         val (inputPattern, rulePattern) = inputPatternToRulePattern
         val setOfPossiblePatternsFromOriginal = mutableSetOf(inputPattern)
         setOfPossiblePatternsFromOriginal.add(inputPattern.flipped())
@@ -22,7 +22,7 @@ class RuleBookBuilder(private val rawInstructionConverter: RawInstructionConvert
             setOfPossiblePatternsFromOriginal.add(rotatedInputPattern.flipped())
         }
 
-        return  rulePattern to setOfPossiblePatternsFromOriginal.asIterable()
+        return  setOfPossiblePatternsFromOriginal.map { it to rulePattern }
     }
 
     private fun parseInputPatternAndRule(readline: String): Pair<Pattern, Pattern> {
