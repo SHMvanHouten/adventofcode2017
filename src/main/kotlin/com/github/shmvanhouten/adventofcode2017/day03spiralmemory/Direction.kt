@@ -22,6 +22,15 @@ enum class Direction {
             Direction.values()[this.ordinal + 1]
         }
     }
+
+    fun turnBack(): Direction{
+        return when(this){
+            Direction.NORTH -> SOUTH
+            Direction.EAST -> WEST
+            Direction.SOUTH -> NORTH
+            Direction.WEST -> EAST
+        }
+    }
 }
 
 enum class RelativePosition(val coordinate: Coordinate) {
