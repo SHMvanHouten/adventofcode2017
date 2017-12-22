@@ -27,4 +27,12 @@ data class Coordinate(val x: Int, val y: Int) {
         return Coordinate(x, y)
     }
 
+    fun move(direction: Direction): Coordinate {
+        return when (direction) {
+            Direction.NORTH -> this + TOP.coordinate
+            Direction.EAST -> this + RIGHT.coordinate
+            Direction.SOUTH -> this + BOTTOM.coordinate
+            Direction.WEST -> this + LEFT.coordinate
+        }
+    }
 }

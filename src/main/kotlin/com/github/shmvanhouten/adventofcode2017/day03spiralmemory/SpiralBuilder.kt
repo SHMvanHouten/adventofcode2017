@@ -36,11 +36,4 @@ abstract class SpiralBuilder {
     }
 }
 
-internal fun Coordinate.move(direction: Direction): Coordinate {
-    return when (direction) {
-        NORTH -> this + TOP.coordinate
-        EAST -> this + RIGHT.coordinate
-        SOUTH -> this + BOTTOM.coordinate
-        WEST -> this + LEFT.coordinate
-    }
-}
+
