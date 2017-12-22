@@ -66,6 +66,6 @@ class RegisterInstructionRunnerTest {
         val listOfRegisterInstructions = converter.getListOfRegisterInstructions("/day08/day08.txt")
 
         val registerInstructionRunner = RegisterInstructionRunner()
-        assertThat(registerInstructionRunner.findHighestRegisterValueHeldAfterRunningInstructions(listOfRegisterInstructions), equalTo(8022))
+        assertThat(registerInstructionRunner.findHighestRegisterValueHeldAfterRunningInstructions(listOfRegisterInstructions), equalTo(9819))
     }
 }
