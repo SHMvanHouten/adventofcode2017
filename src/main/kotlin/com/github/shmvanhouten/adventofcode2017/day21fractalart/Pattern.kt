@@ -1,6 +1,9 @@
 package com.github.shmvanhouten.adventofcode2017.day21fractalart
 
 data class Pattern(val gridLayout: List<List<Char>>) {
+
+    val size = gridLayout.size
+
     fun flipped(): Pattern {
         return Pattern(gridLayout.map { it.reversed() })
     }
@@ -18,15 +21,5 @@ data class Pattern(val gridLayout: List<List<Char>>) {
 
         return Pattern(newRows)
 
-    }
-}
-data class MutablePattern(var gridLayout: MutableList<List<Char>> = mutableListOf()) {
-
-    fun addRow(chars: List<Char>){
-        gridLayout.add(chars)
-    }
-
-    fun toPattern(): Pattern {
-        return Pattern(gridLayout)
     }
 }

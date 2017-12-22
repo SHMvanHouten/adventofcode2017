@@ -4,33 +4,34 @@ import com.github.shmvanhouten.adventofcode2017.util.rawinstructionconverter.Raw
 
 class RuleBookBuilder(private val rawInstructionConverter: RawInstructionConverter = RawInstructionConverter()) {
 
-    fun buildExtendedRuleBook(path: String): Map<Pattern, Pattern> {
-        return rawInstructionConverter.convertRawInputIntoInstructions(path, this::parseInputPatternAndRule)
+    fun buildExtendedRuleBook(path: String): RuleBook {
+        val inputToOutputPatterns = rawInstructionConverter.convertRawInputIntoInstructions(path, this::parseInputPatternAndRule)
                 .flatMap { extractAllInputPatterns(it) }
                 .toMap()
+        return RuleBook(inputToOutputPatterns)
     }
 
-    private fun extractAllInputPatterns(inputPatternToRulePattern: Pair<Pattern, Pattern>): List<Pair<Pattern, Pattern>> {
-        val (inputPattern, rulePattern) = inputPatternToRulePattern
-        val setOfPossiblePatternsFromOriginal = mutableSetOf(inputPattern)
-        setOfPossiblePatternsFromOriginal.add(inputPattern.flipped())
+    private fun extractAllInputPatterns(inputToOutputPatterns: Pair<Pattern, Pattern>): List<Pair<Pattern, Pattern>> {
+        val (inputPattern, outputPattern) = inputToOutputPatterns
+        val possiblePatterns = mutableSetOf(inputPattern)
+        possiblePatterns.add(inputPattern.flipped())
 
         var rotatedInputPattern = inputPattern
         0.until(3).forEach {
             rotatedInputPattern = rotatedInputPattern.rotated()
-            setOfPossiblePatternsFromOriginal.add(rotatedInputPattern)
-            setOfPossiblePatternsFromOriginal.add(rotatedInputPattern.flipped())
+            possiblePatterns.add(rotatedInputPattern)
+            possiblePatterns.add(rotatedInputPattern.flipped())
         }
 
-        return  setOfPossiblePatternsFromOriginal.map { it to rulePattern }
+        return  possiblePatterns.map { it to outputPattern }
     }
 
     private fun parseInputPatternAndRule(readline: String): Pair<Pattern, Pattern> {
         val split = readline.split(" ")
-        val pattern = split[0].split('/').map { it.toList() }
-        val rulePattern = split[2].split('/').map { it.toList() }
+        val inputPatternGrid = split[0].split('/').map { it.toList() }
+        val outputPatternGrid = split[2].split('/').map { it.toList() }
 
-        return Pair(Pattern(pattern), Pattern(rulePattern))
+        return Pair(Pattern(inputPatternGrid), Pattern(outputPatternGrid))
     }
 
 }

@@ -1,6 +1,6 @@
 package com.github.shmvanhouten.adventofcode2017.day21fractalart
 
-class ArtGenerator(private val ruleBook: Map<Pattern, Pattern>) {
+class ArtGenerator(private val ruleBook: RuleBook) {
 
     private val STANDARD_STARTING_GRID = listOf(
             listOf('.', '#', '.'),
@@ -13,10 +13,12 @@ class ArtGenerator(private val ruleBook: Map<Pattern, Pattern>) {
 
         0.until(amountOfIterations).forEach {
             grid = redrawGrid(grid)
+            val count = grid.flatMap { it }.count { it == '#' }
+            println("after ${it + 1} iterations, there are $count pixels lit")
         }
-        grid.forEach {
-            println(it.joinToString(""))
-        }
+//        grid.forEach {
+//            println(it.joinToString(""))
+//        }
 
         return grid.flatMap { it }.count { it == '#' }
     }
@@ -24,22 +26,22 @@ class ArtGenerator(private val ruleBook: Map<Pattern, Pattern>) {
     private fun redrawGrid(grid: List<List<Char>>): List<List<Char>> {
         val patternGrid = breakGridUpIntoPatterns(grid)
 
-        return patternGrid.flatMap { transformPatternRowByRules(it) }
+        return patternGrid.flatMap { transformRowToNewGridLayouts(it) }
     }
 
-    private fun transformPatternRowByRules(patternRow: List<Pattern>): List<List<Char>> {
-        val listOfPatternGrids = patternRow.map { getOutputPatternFromRuleBook(it) }
+    private fun transformRowToNewGridLayouts(patternRow: List<Pattern>): List<List<Char>> {
+        val listOfPatternGrids = patternRow.map { convertPatternByRuleBook(it) }
         val gridRow = MutableList(listOfPatternGrids[0].size, { _ -> mutableListOf<Char>() })
 
         listOfPatternGrids.forEach { outputGrid ->
-            outputGrid.forEachIndexed { index, list ->
-                gridRow[index].addAll(list)
+            outputGrid.forEachIndexed { index, characters ->
+                gridRow[index].addAll(characters)
             }
         }
         return gridRow
     }
 
-    private fun getOutputPatternFromRuleBook(pattern: Pattern): List<List<Char>> {
+    private fun convertPatternByRuleBook(pattern: Pattern): List<List<Char>> {
         return ruleBook.getValue(pattern).gridLayout
     }
 
@@ -47,32 +49,23 @@ class ArtGenerator(private val ruleBook: Map<Pattern, Pattern>) {
         val artGridSize = artGrid.size
         val patternSize = getPatternSize(artGridSize)
 
-        val patternGrid = mutableListOf<MutableList<Pattern>>()
-        0.until(artGridSize).step(patternSize).forEach { y ->
-            val patternRow = buildPatternRow(patternSize, artGrid, y)
-            patternGrid.add(patternRow)
+        return 0.until(artGridSize).step(patternSize).map { y ->
+            turnRowsIntoPatternRow(patternSize, artGrid, y)
         }
 
-        return patternGrid.map { it.toList() }
     }
 
-    private fun buildPatternRow(patternSize: Int, artGrid: List<List<Char>>, rowIndex: Int): MutableList<Pattern> {
-        val artGridSize = artGrid.size
-        val patternRow = mutableListOf<Pattern>()
-        0.until(artGridSize).step(patternSize).forEach { startIndex ->
-            val mutablePattern = buildPattern(patternSize, artGrid, rowIndex, startIndex)
-            patternRow.add(mutablePattern.toPattern())
+    private fun turnRowsIntoPatternRow(patternSize: Int, artGrid: List<List<Char>>, y: Int): List<Pattern> {
+        return 0.until(artGrid.size).step(patternSize).map { x ->
+            buildPatternFromPairOrTrioOfRows(patternSize, artGrid, y, x)
         }
-        return patternRow
     }
 
-    private fun buildPattern(patternSize: Int, artGrid: List<List<Char>>, rowIndex: Int, startIndex: Int): MutablePattern {
-        val mutablePattern = MutablePattern()
-        0.until(patternSize).forEach { patternRowIndex ->
-            val row = artGrid[rowIndex + patternRowIndex].subList(startIndex, startIndex + patternSize)
-            mutablePattern.addRow(row)
+    private fun buildPatternFromPairOrTrioOfRows(patternSize: Int, artGrid: List<List<Char>>, y: Int, x: Int): Pattern {
+        val patternGridLayout = 0.until(patternSize).map { patternRowIndex ->
+            artGrid[y + patternRowIndex].subList(x, x + patternSize)
         }
-        return mutablePattern
+        return Pattern(patternGridLayout)
     }
 
     private fun getPatternSize(gridSize: Int): Int {
