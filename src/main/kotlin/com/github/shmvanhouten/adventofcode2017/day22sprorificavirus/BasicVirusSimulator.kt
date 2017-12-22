@@ -1,39 +1,38 @@
 package com.github.shmvanhouten.adventofcode2017.day22sprorificavirus
 
 import com.github.shmvanhouten.adventofcode2017.day03spiralmemory.Coordinate
+import com.github.shmvanhouten.adventofcode2017.day03spiralmemory.Direction
 import com.github.shmvanhouten.adventofcode2017.day03spiralmemory.Direction.NORTH
 import com.github.shmvanhouten.adventofcode2017.day22sprorificavirus.InfectionStatus.CLEAN
 import com.github.shmvanhouten.adventofcode2017.day22sprorificavirus.InfectionStatus.INFECTED
 
-class BasicVirusSimulator: VirusSimulator {
-    override fun countInfections(amountOfBursts: Int, infectedCoordinates: Map<Coordinate, InfectionStatus>): Int {
+class BasicVirusSimulator : VirusSimulator() {
 
-        val affectedCoordinates = infectedCoordinates.toMutableMap()
 
-        var currentPosition = Coordinate(0, 0)
-        var currentDirection = NORTH
+    override fun advanceBurst(affectedCoordinates: MutableMap<Coordinate, InfectionStatus>, virusState: VirusState): VirusState {
+        var currentPosition = virusState.position
+        var currentDirection = virusState.direction
+        var amountOfInfections = virusState.amountOfInfections
 
-        var amountOfInfections = 0
+        val nodeStatus = affectedCoordinates.getOrPut(currentPosition, { CLEAN })
+        if (nodeStatus == INFECTED) {
 
-        0.until(amountOfBursts).forEach { _ ->
-            val nodeStatus = affectedCoordinates.getOrPut(currentPosition, { CLEAN })
-            if (nodeStatus == INFECTED) {
+            affectedCoordinates[currentPosition] = CLEAN
 
-                affectedCoordinates[currentPosition] = CLEAN
-                currentDirection = currentDirection.turnRight()
-            } else {
+            currentDirection = currentDirection.turnRight()
 
-                affectedCoordinates[currentPosition] = INFECTED
+        } else {
 
-                amountOfInfections++
+            affectedCoordinates[currentPosition] = INFECTED
 
-                currentDirection = currentDirection.turnLeft()
-            }
-            currentPosition = currentPosition.move(currentDirection)
+            currentDirection = currentDirection.turnLeft()
+
+            amountOfInfections++
+
         }
+        currentPosition = currentPosition.move(currentDirection)
+        return VirusState(currentPosition, currentDirection, amountOfInfections)
 
-//        printGrid(affectedCoordinates.filter { it.value != CLEAN })
-        return amountOfInfections
     }
 
 }
