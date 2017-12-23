@@ -58,6 +58,7 @@ class AssemblyCodeDuetRunner(assemblyCode: List<AssemblyInstruction>, private va
                 MULTIPLY -> performMultiplyInstruction(registers, instruction)
                 MODULO -> performModuloInstruction(registers, instruction)
                 JUMP_GREATER_THAN_ZERO -> index = performJumpInstruction(registers, instruction, index)
+                else -> error("this instructionType should not be in the day 18 challenge: ${instruction.instructionType}")
             }
             index++
         }

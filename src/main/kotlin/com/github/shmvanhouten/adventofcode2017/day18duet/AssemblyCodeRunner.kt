@@ -22,6 +22,7 @@ open class AssemblyCodeRunner(val assemblyCode: List<AssemblyInstruction>) {
             // firstValue for recover is always a register
                 InstructionType.RECEIVE -> if (registers.getValue(instruction.firstValue as String) != 0L) return lastFrequency
                 InstructionType.JUMP_GREATER_THAN_ZERO -> index = performJumpInstruction(registers, instruction, index)
+                else -> error("this instructionType should not be in the day 18 challenge: ${instruction.instructionType}")
             }
             index++
         }
