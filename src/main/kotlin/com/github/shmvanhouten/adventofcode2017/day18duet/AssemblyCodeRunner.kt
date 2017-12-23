@@ -21,7 +21,7 @@ open class AssemblyCodeRunner(val assemblyCode: List<AssemblyInstruction>) {
                 InstructionType.MODULO -> performModuloInstruction(registers, instruction)
             // firstValue for recover is always a register
                 InstructionType.RECEIVE -> if (registers.getValue(instruction.firstValue as String) != 0L) return lastFrequency
-                InstructionType.JUMP -> index = performJumpInstruction(registers, instruction, index)
+                InstructionType.JUMP_GREATER_THAN_ZERO -> index = performJumpInstruction(registers, instruction, index)
             }
             index++
         }
@@ -40,9 +40,9 @@ open class AssemblyCodeRunner(val assemblyCode: List<AssemblyInstruction>) {
     }
 
     internal fun performJumpInstruction(registers: MutableMap<String, Long>, instruction: AssemblyInstruction, index: Int): Int {
-        val checkLong = instruction.firstValue as? Long ?: registers.getValue(instruction.firstValue as String)
+        val checkLong = instruction.firstValue as? Long ?: registers.getOrPut(instruction.firstValue as String, {0})
         val secondValue = instruction.secondValue
-        if (checkLong > 0L) {
+        if (doesValuePassCondition(checkLong)) {
             when (secondValue) {
                 is Long -> return index + secondValue.toInt() - 1
                 is String -> return index + registers.getValue(secondValue).toInt() - 1
@@ -50,6 +50,8 @@ open class AssemblyCodeRunner(val assemblyCode: List<AssemblyInstruction>) {
         }
         return index
     }
+
+    open fun doesValuePassCondition(checkLong: Long) = checkLong > 0L
 
     internal fun performAddInstruction(registers: MutableMap<String, Long>, instruction: AssemblyInstruction) {
         performOperation(instruction, registers, { first, second -> first + second })
@@ -65,7 +67,7 @@ open class AssemblyCodeRunner(val assemblyCode: List<AssemblyInstruction>) {
     }
 
 
-    private fun performOperation(instruction: AssemblyInstruction, registers: MutableMap<String, Long>, operation: (Long, Long) -> Long) {
+    internal fun performOperation(instruction: AssemblyInstruction, registers: MutableMap<String, Long>, operation: (Long, Long) -> Long) {
         val register = instruction.firstValue as String
         val valueToPerformOperationWith = instruction.secondValue
         when (valueToPerformOperationWith) {

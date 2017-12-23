@@ -39,10 +39,12 @@ class AssemblyInstructionConverter(private val rawInstructionConverter: RawInstr
             "snd" -> SOUND
             "set" -> SET
             "add" -> ADD
+            "sub" -> SUBTRACT
             "mul" -> MULTIPLY
             "mod" -> MODULO
             "rcv" -> RECEIVE
-            "jgz" -> JUMP
+            "jgz" -> JUMP_GREATER_THAN_ZERO
+            "jnz" -> JUMP_NOT_ZERO
             else -> error("unknown instructionType for $readline")
         }
     }

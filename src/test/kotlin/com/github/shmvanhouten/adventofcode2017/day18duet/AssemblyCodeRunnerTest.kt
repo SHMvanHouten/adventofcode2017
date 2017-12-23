@@ -60,7 +60,7 @@ class AssemblyCodeRunnerTest {
     fun `it should SET registry a to 5, jump 2, SOUND a, and RECOVER the sound`() {
 
         val assemblyCode = listOf(AssemblyInstruction(SET, "a", 5L),
-                AssemblyInstruction(JUMP, 4L, 2L),
+                AssemblyInstruction(JUMP_GREATER_THAN_ZERO, 4L, 2L),
                 AssemblyInstruction(MODULO, "a", 3L),
                 AssemblyInstruction(SOUND, "a"),
                 AssemblyInstruction(RECEIVE, "a"))

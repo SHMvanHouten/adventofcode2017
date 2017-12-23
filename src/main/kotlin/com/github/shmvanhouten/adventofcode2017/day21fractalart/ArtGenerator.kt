@@ -30,7 +30,7 @@ class ArtGenerator(private val ruleBook: RuleBook) {
     }
 
     private fun transformRowToNewGridLayouts(patternRow: List<Pattern>): List<List<Char>> {
-        val listOfPatternGrids = patternRow.map { convertPatternByRuleBook(it) }
+        val listOfPatternGrids = patternRow.map { convertPatternByRuleBook(it).gridLayout }
         val gridRow = MutableList(listOfPatternGrids[0].size, { _ -> mutableListOf<Char>() })
 
         listOfPatternGrids.forEach { outputGrid ->
@@ -41,8 +41,8 @@ class ArtGenerator(private val ruleBook: RuleBook) {
         return gridRow
     }
 
-    private fun convertPatternByRuleBook(pattern: Pattern): List<List<Char>> {
-        return ruleBook.getValue(pattern).gridLayout
+    private fun convertPatternByRuleBook(pattern: Pattern): Pattern {
+        return ruleBook.getValue(pattern)
     }
 
     private fun breakGridUpIntoPatterns(artGrid: List<List<Char>>): List<List<Pattern>> {

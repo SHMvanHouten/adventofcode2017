@@ -1,7 +1,6 @@
 package com.github.shmvanhouten.adventofcode2017.day22sprorificavirus
 
 import com.github.shmvanhouten.adventofcode2017.day03spiralmemory.Coordinate
-import com.github.shmvanhouten.adventofcode2017.day03spiralmemory.Direction
 import com.github.shmvanhouten.adventofcode2017.day22sprorificavirus.InfectionStatus.*
 
 class AdvancedVirusSimulator : VirusSimulator() {
