@@ -28,19 +28,17 @@ abstract class BridgeBuilder {
 
     private fun addMatchingComponentsToEnd(bridgeComponents: Iterable<BridgeComponent>, currentBridge: Bridge): List<Bridge> {
         return bridgeComponents
-                .withIndex()
-                .filter { !currentBridge.usedComponents.contains(it.index) }
-                .filter { it.value.matchPorts(currentBridge.openPort) }
-                .map { currentBridge.addComponent(it.value, it.index) }
+                .filter { !currentBridge.usedComponents.contains(it.id) }
+                .filter { it.matchPorts(currentBridge.openPort) }
+                .map { currentBridge.addComponent(it, it.id) }
     }
 
     abstract fun isCurrentBridgeBetter(currentBridge: Bridge, bestBridge: Bridge): Boolean
 
     private fun buildStartingBridges(bridgeComponents: Iterable<BridgeComponent>): MutableList<Bridge> {
         return bridgeComponents
-                .withIndex()
-                .filter { it.value.matchPorts(0) }
-                .map({ Bridge(listOf(it.value), it.value.getOtherPort(0), listOf(it.index))})
+                .filter { it.matchPorts(0) }
+                .map({ Bridge(listOf(it), it.getOtherPort(0), listOf(it.id))})
                 .toMutableList()
     }
 }
