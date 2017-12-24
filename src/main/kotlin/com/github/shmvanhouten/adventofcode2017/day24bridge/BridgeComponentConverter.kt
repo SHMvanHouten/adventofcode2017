@@ -6,13 +6,13 @@ import com.github.shmvanhouten.adventofcode2017.util.splitIntoTwo
 class BridgeComponentConverter(private val converter: RawInstructionConverter = RawInstructionConverter()) {
 
     fun convertListOfComponents(path: String): Iterable<BridgeComponent> {
-        return converter.convertIndexedRawInputIntoInstructions(path, this::parseStringToBridgeComponent)
+        return converter.convertRawInputIntoInstructions(path, this::parseStringToBridgeComponent)
                 .asIterable()
     }
 
-    private fun parseStringToBridgeComponent(readline: String, index: Int): BridgeComponent {
+    private fun parseStringToBridgeComponent(readline: String): BridgeComponent {
         val (firstPort, secondPort) = readline.splitIntoTwo("/")
-        return BridgeComponent(index, firstPort.toInt(), secondPort.toInt())
+        return BridgeComponent(firstPort.toInt(), secondPort.toInt())
     }
 
 

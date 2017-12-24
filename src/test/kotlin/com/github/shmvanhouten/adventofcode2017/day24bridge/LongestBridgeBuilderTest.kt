@@ -10,14 +10,14 @@ class LongestBridgeBuilderTest {
     @Test
     fun `it should build a bridge from these components to get a longest bridge with strength 19`() {
         val bridgeComponents = listOf(
-                BridgeComponent(0, 0, 2),
-                BridgeComponent(1, 2, 2),
-                BridgeComponent(2, 2, 3),
-                BridgeComponent(3, 3, 4),
-                BridgeComponent(4, 3, 5),
-                BridgeComponent(5, 0, 1),
-                BridgeComponent(6, 10, 1),
-                BridgeComponent(7, 9, 10)
+                BridgeComponent(0, 2),
+                BridgeComponent(2, 2),
+                BridgeComponent(2, 3),
+                BridgeComponent(3, 4),
+                BridgeComponent(3, 5),
+                BridgeComponent(0, 1),
+                BridgeComponent(10, 1),
+                BridgeComponent(9, 10)
         )
         val bridgeBuilder = LongestBridgeBuilder()
         assertThat(bridgeBuilder.buildMostSuitableBridge(bridgeComponents), equalTo(19))
