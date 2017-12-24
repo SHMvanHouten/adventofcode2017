@@ -12,7 +12,6 @@ class BridgeIterator(private val bridges: MutableList<Pair<Bridge, List<Int>>>) 
 
     fun addBridges(bridgeEntries: List<Pair<Bridge, List<Int>>>){
         bridges.addAll(bridgeEntries)
-        if(index % 10000 == 0) println(index)
     }
 
     fun hasNext(): Boolean {

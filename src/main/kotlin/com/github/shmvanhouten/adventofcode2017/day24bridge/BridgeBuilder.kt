@@ -1,18 +1,17 @@
 package com.github.shmvanhouten.adventofcode2017.day24bridge
 
-class BridgeBuilder {
+abstract class BridgeBuilder {
 
-    fun buildStrongestPossibleBridge(bridgeComponents: List<BridgeComponent>): Int {
+    fun buildMostSuitableBridge(bridgeComponents: List<BridgeComponent>): Int {
 
-        val uncompletedBridges = BridgeIterator(buildStartingBridges(bridgeComponents).toMutableList())
-        var biggestBridgeStrength = 0
+        val uncompletedBridges = BridgeIterator(buildStartingBridges(bridgeComponents))
+        var strongestBridge = Bridge(emptyList(), 0)
 
         while (uncompletedBridges.hasNext()) {
             val (currentBridge, visitedComponentIndexes) = uncompletedBridges.getNext()
 
-            val currentStrength = currentBridge.strength
             if (currentBridge.openPort == 0) {
-                if (currentStrength > biggestBridgeStrength) biggestBridgeStrength = currentStrength
+                if (isCurrentBridgeBetter(currentBridge, strongestBridge)) strongestBridge = currentBridge
             } else {
 
                 val newBridges = (0.until(bridgeComponents.size))
@@ -22,7 +21,7 @@ class BridgeBuilder {
 
 
                 if (newBridges.isEmpty()) {
-                    if (currentStrength > biggestBridgeStrength) biggestBridgeStrength = currentStrength
+                    if (isCurrentBridgeBetter(currentBridge, strongestBridge)) strongestBridge = currentBridge
                 } else {
                     uncompletedBridges.addBridges(newBridges)
                 }
@@ -30,15 +29,17 @@ class BridgeBuilder {
 
         }
 
-        return biggestBridgeStrength
+        return strongestBridge.strength
     }
 
-    private fun buildStartingBridges(bridgeComponents: List<BridgeComponent>): List<Pair<Bridge, List<Int>>> {
+    abstract fun isCurrentBridgeBetter(currentBridge: Bridge, bestBridge: Bridge): Boolean
+
+    private fun buildStartingBridges(bridgeComponents: List<BridgeComponent>): MutableList<Pair<Bridge, List<Int>>> {
         return bridgeComponents
                 .withIndex()
                 .filter { it.value.matchPorts(0) }
                 .map({ Bridge(listOf(it.value), it.value.getOtherPort(0)) to listOf(it.index) })
-
+                .toMutableList()
     }
 }
 
