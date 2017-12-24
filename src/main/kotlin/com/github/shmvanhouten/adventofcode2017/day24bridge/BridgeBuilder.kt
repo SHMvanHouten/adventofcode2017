@@ -5,31 +5,32 @@ abstract class BridgeBuilder {
     fun buildMostSuitableBridge(bridgeComponents: List<BridgeComponent>): Int {
 
         val uncompletedBridges = BridgeIterator(buildStartingBridges(bridgeComponents))
-        var strongestBridge = Bridge(emptyList(), 0)
+        var bestBridge = Bridge(emptyList(), 0)
 
         while (uncompletedBridges.hasNext()) {
             val (currentBridge, visitedComponentIndexes) = uncompletedBridges.getNext()
 
             if (currentBridge.openPort == 0) {
-                if (isCurrentBridgeBetter(currentBridge, strongestBridge)) strongestBridge = currentBridge
+                if (isCurrentBridgeBetter(currentBridge, bestBridge)) bestBridge = currentBridge
             } else {
-
-                val newBridges = (0.until(bridgeComponents.size))
-                        .filter { !visitedComponentIndexes.contains(it) }
-                        .filter { bridgeComponents[it].matchPorts(currentBridge.openPort) }
-                        .map{ currentBridge.addComponent(bridgeComponents[it]) to visitedComponentIndexes.plus(it) }
-
+                val newBridges = addMatchingComponentsToEnd(bridgeComponents, visitedComponentIndexes, currentBridge)
 
                 if (newBridges.isEmpty()) {
-                    if (isCurrentBridgeBetter(currentBridge, strongestBridge)) strongestBridge = currentBridge
+                    if (isCurrentBridgeBetter(currentBridge, bestBridge)) bestBridge = currentBridge
                 } else {
                     uncompletedBridges.addBridges(newBridges)
                 }
             }
-
         }
 
-        return strongestBridge.strength
+        return bestBridge.strength
+    }
+
+    private fun addMatchingComponentsToEnd(bridgeComponents: List<BridgeComponent>, visitedComponentIndexes: List<Int>, currentBridge: Bridge): List<Pair<Bridge, List<Int>>> {
+        return (0.until(bridgeComponents.size))
+                .filter { !visitedComponentIndexes.contains(it) }
+                .filter { bridgeComponents[it].matchPorts(currentBridge.openPort) }
+                .map { currentBridge.addComponent(bridgeComponents[it]) to visitedComponentIndexes.plus(it) }
     }
 
     abstract fun isCurrentBridgeBetter(currentBridge: Bridge, bestBridge: Bridge): Boolean
