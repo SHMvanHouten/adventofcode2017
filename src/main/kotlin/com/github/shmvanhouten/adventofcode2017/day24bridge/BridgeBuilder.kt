@@ -1,8 +1,16 @@
 package com.github.shmvanhouten.adventofcode2017.day24bridge
 
-abstract class BridgeBuilder {
+class BridgeBuilder {
 
-    fun buildMostSuitableBridge(bridgeComponents: Iterable<BridgeComponent>): Int {
+    fun buildStrongestBridge(bridgeComponents: Iterable<BridgeComponent>): Int {
+        return buildMostSuitableBridge(bridgeComponents, this::isCurrentBridgeStronger).strength
+    }
+
+    fun buildLongestBridge(bridgeComponents: Iterable<BridgeComponent>): Int {
+        return buildMostSuitableBridge(bridgeComponents, this::isCurrentBridgeLonger).strength
+    }
+
+    private fun buildMostSuitableBridge(bridgeComponents: Iterable<BridgeComponent>, isCurrentBridgeBetter: (Bridge, Bridge) -> Boolean): Bridge {
 
         val uncompletedBridges = BridgeIterator(buildStartingBridges(bridgeComponents))
         var bestBridge = Bridge(emptyList(), 0)
@@ -18,8 +26,17 @@ abstract class BridgeBuilder {
             }
         }
 
-        return bestBridge.strength
+        return bestBridge
     }
+
+    private fun isCurrentBridgeLonger(currentBridge: Bridge, bestBridge: Bridge): Boolean {
+        val currentLength = currentBridge.length
+        val bestBridgeLength = bestBridge.length
+        return currentLength > bestBridgeLength || currentLength == bestBridgeLength && isCurrentBridgeStronger(currentBridge, bestBridge)
+    }
+
+    private fun isCurrentBridgeStronger(currentBridge: Bridge, bestBridge: Bridge) =
+            currentBridge.strength > bestBridge.strength
 
     private fun addMatchingComponentsToEnd(bridgeComponents: Iterable<BridgeComponent>, currentBridge: Bridge): List<Bridge> {
         return bridgeComponents
@@ -28,8 +45,6 @@ abstract class BridgeBuilder {
                 .filter { it.matchPorts(currentBridge.openPort) }
                 .map { currentBridge.addComponent(it) }
     }
-
-    abstract fun isCurrentBridgeBetter(currentBridge: Bridge, bestBridge: Bridge): Boolean
 
     private fun buildStartingBridges(bridgeComponents: Iterable<BridgeComponent>): MutableList<Bridge> {
         return bridgeComponents
