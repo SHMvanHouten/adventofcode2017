@@ -8,6 +8,22 @@ class LongestBridgeBuilderTest {
 
 
     @Test
+    fun `it should build a bridge from these components to get a longest bridge with strength 19`() {
+        val bridgeComponents = listOf(
+                BridgeComponent(0, 2),
+                BridgeComponent(2, 2),
+                BridgeComponent(2, 3),
+                BridgeComponent(3, 4),
+                BridgeComponent(3, 5),
+                BridgeComponent(0, 1),
+                BridgeComponent(10, 1),
+                BridgeComponent(9, 10)
+        )
+        val bridgeBuilder = LongestBridgeBuilder()
+        assertThat(bridgeBuilder.buildMostSuitableBridge(bridgeComponents), equalTo(19))
+    }
+
+    @Test
     fun `it should solve the challenge input`() {
         val componentConverter = BridgeComponentConverter()
         val bridgeComponents = componentConverter.convertListOfComponents("/day24/day24.txt")
