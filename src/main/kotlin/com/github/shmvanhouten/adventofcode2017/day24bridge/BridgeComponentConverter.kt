@@ -5,8 +5,9 @@ import com.github.shmvanhouten.adventofcode2017.util.splitIntoTwo
 
 class BridgeComponentConverter(private val converter: RawInstructionConverter = RawInstructionConverter()) {
 
-    fun convertListOfComponents(path: String): List<BridgeComponent> {
+    fun convertListOfComponents(path: String): Iterable<BridgeComponent> {
         return converter.convertRawInputIntoInstructions(path, this::parseStringToBridgeComponent)
+                .asIterable()
     }
 
     private fun parseStringToBridgeComponent(readline: String): BridgeComponent {

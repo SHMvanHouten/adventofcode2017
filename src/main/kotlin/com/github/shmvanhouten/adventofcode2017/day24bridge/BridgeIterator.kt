@@ -1,20 +1,18 @@
 package com.github.shmvanhouten.adventofcode2017.day24bridge
 
-class BridgeIterator(private val bridges: MutableList<Pair<Bridge, List<Int>>>) {
+class BridgeIterator(private val bridges: MutableList<Bridge>) {
 
     private var index = 0
 
-    fun getNext(): Pair<Bridge, List<Int>> {
-        val bridgeEntry = bridges[index]
+    fun getNext(): Bridge {
+        val currentBridge = bridges[index]
         index++
-        return bridgeEntry
+        return currentBridge
     }
 
-    fun addBridges(bridgeEntries: List<Pair<Bridge, List<Int>>>){
-        bridges.addAll(bridgeEntries)
+    fun addBridges(bridges: List<Bridge>){
+        this.bridges.addAll(bridges)
     }
 
-    fun hasNext(): Boolean {
-        return index < bridges.size
-    }
+    fun hasNext(): Boolean = index < bridges.size
 }
