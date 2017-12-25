@@ -15,7 +15,7 @@ class BluePrintExecutorTest {
     @Test
     fun `it should follow the instructions of the challenge input`() {
         val executor = BluePrintExecutor()
-        assertThat(executor.runInstructions(challengeInput), equalTo(3))
+        assertThat(executor.runInstructions(challengeInput), equalTo(2526))
     }
 
 
