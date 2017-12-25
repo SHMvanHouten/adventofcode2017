@@ -22,9 +22,9 @@ abstract class BridgeBuilder {
     }
 
     private fun addMatchingComponentsToEnd(bridgeComponents: Iterable<BridgeComponent>, currentBridge: Bridge): List<Bridge> {
+        if(currentBridge.openPort == 0) return emptyList()
         return bridgeComponents
                 .subtract(currentBridge.components)
-                .filter { !it.matchPorts(0) }
                 .filter { it.matchPorts(currentBridge.openPort) }
                 .map { currentBridge.addComponent(it) }
     }
