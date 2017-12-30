@@ -4,11 +4,10 @@ abstract class BridgeBuilder {
 
     fun buildMostSuitableBridge(bridgeComponents: Iterable<BridgeComponent>): Int {
 
-        val uncompletedBridges = BridgeIterator(buildStartingBridges(bridgeComponents))
+        val uncompletedBridges = BridgeIterable(buildStartingBridges(bridgeComponents))
         var bestBridge = Bridge(emptyList(), 0)
 
-        while (uncompletedBridges.hasNext()) {
-            val currentBridge = uncompletedBridges.getNext()
+        uncompletedBridges.forEach { currentBridge ->
             val newBridges = addMatchingComponentsToEnd(bridgeComponents, currentBridge)
 
             if (newBridges.isEmpty()) {
