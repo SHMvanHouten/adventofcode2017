@@ -1,6 +1,6 @@
 package com.github.shmvanhouten.adventofcode2017.day13firewall
 
-class FireWall(private val layers: Map<Int, Step>): Iterable<Step> {
+class FireWall(private val layers: Map<Int, Layer>) : Iterable<Layer> {
 
     private var index = 0
 
@@ -8,19 +8,16 @@ class FireWall(private val layers: Map<Int, Step>): Iterable<Step> {
         index = 0
     }
 
-    override fun iterator(): Iterator<Step> = LayerIterator()
+    override fun iterator(): Iterator<Layer> = LayerIterator()
 
-    inner class LayerIterator: Iterator<Step>{
+    inner class LayerIterator : Iterator<Layer> {
         override fun hasNext(): Boolean {
             return layers.keys.any { it >= index }
         }
 
-        override fun next(): Step {
-            val layer = if (layers.containsKey(index)) {
-                layers.getValue(index)
-            } else {
-                emptyStep()
-            }
+        override fun next(): Layer {
+            index = layers.keys.first { it >= index }
+            val layer = layers.getValue(index)
             index++
             return layer
         }

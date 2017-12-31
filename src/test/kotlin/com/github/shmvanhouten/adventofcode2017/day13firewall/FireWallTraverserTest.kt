@@ -8,7 +8,7 @@ class FireWallTraverserTest {
 
     @Test
     fun `it should traverse the Firewall and hit a severity of 4`() {
-        val layer = StepWithLayer(Layer(2,2))
+        val layer = Layer(2,2)
         val layers = mapOf(2 to layer)
         val fireWall = FireWall(layers)
         val traverser = FireWallTraverser(fireWall)

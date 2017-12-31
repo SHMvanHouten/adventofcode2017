@@ -7,13 +7,13 @@ class FireWallConstructor(private val rawInstructionConverter: RawInstructionCon
 
     fun buildFireWallFromRawInstructions(path: String): FireWall {
         val layers = rawInstructionConverter.convertRawInputIntoInstructions(path, this::buildLayer)
-                .associateBy({ it.layer.depth }, { it })
+                .associateBy({ it.depth }, { it })
         return FireWall(layers)
     }
 
-    private fun buildLayer(rawLayer: String): StepWithLayer {
+    private fun buildLayer(rawLayer: String): Layer {
         val (depth, range) = rawLayer.splitIntoTwo(": ")
-        return StepWithLayer(Layer(depth.toInt(), range.toInt()))
+        return Layer(depth.toInt(), range.toInt())
     }
 }
 

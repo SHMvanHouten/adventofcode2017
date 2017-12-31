@@ -3,20 +3,12 @@ package com.github.shmvanhouten.adventofcode2017.day13firewall
 class FireWallTraverser(private val fireWall: FireWall) {
 
     fun getSeverity(): Int {
-        var severity = 0
-        var amountOfPicosecondsPassed = 0
-        fireWall.forEach { step ->
 
-            if (step is StepWithLayer) {
-                val layer = step.layer
-                // Every step with layer has it's scanner hit the 0 point once every x seconds where x == (range - 1) * 2
-                if (amountOfPicosecondsPassed % ((layer.range - 1) * 2) == 0) {
-                    severity += layer.depth * layer.range
-                }
-            }
-            amountOfPicosecondsPassed++
-        }
-        return severity
+        // Every step has its scanner hit the 0 point once every x seconds where x == (range - 1) * 2
+        return fireWall
+                .filter { layer -> layer.depth % ((layer.range - 1) * 2) == 0 }
+                .sumBy { layer ->  layer.depth * layer.range }
+
     }
 
     fun getTimeToWaitForUndetectedTraversal(): Int? {
@@ -27,18 +19,8 @@ class FireWallTraverser(private val fireWall: FireWall) {
     }
 
     private fun passedThroughUncaught(fireWallState: FireWall, amountOfPicoSecondsWaited: Int): Boolean {
-        var amountOfPicoSecondsPast = amountOfPicoSecondsWaited
-        fireWallState.forEach { step ->
 
-            if (step is StepWithLayer) {
-                val layer = step.layer
-                // Every step has it's scanner hit the 0 point once every x seconds where x == (range - 1) * 2
-                if (amountOfPicoSecondsPast % ((layer.range - 1) * 2) == 0) {
-                    return false
-                }
-            }
-            amountOfPicoSecondsPast++
-        }
-        return true
+        // Every step has its scanner hit the 0 point once every x seconds where x == (range - 1) * 2
+        return fireWallState.none { layer -> (layer.depth + amountOfPicoSecondsWaited) % ((layer.range - 1) * 2) == 0 }
     }
 }
