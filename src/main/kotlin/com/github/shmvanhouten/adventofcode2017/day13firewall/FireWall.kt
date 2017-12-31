@@ -2,15 +2,11 @@ package com.github.shmvanhouten.adventofcode2017.day13firewall
 
 class FireWall(private val layers: Map<Int, Layer>) : Iterable<Layer> {
 
-    private var index = 0
-
-    fun reset() {
-        index = 0
-    }
-
     override fun iterator(): Iterator<Layer> = LayerIterator()
 
     inner class LayerIterator : Iterator<Layer> {
+        private var index = 0
+
         override fun hasNext(): Boolean {
             return layers.keys.any { it >= index }
         }

@@ -7,13 +7,12 @@ class FireWallTraverser(private val fireWall: FireWall) {
         // Every step has its scanner hit the 0 point once every x seconds where x == (range - 1) * 2
         return fireWall
                 .filter { layer -> layer.depth % ((layer.range - 1) * 2) == 0 }
-                .sumBy { layer ->  layer.depth * layer.range }
+                .sumBy { layer -> layer.depth * layer.range }
 
     }
 
     fun getTimeToWaitForUndetectedTraversal(): Int? {
         return (0.until(Int.MAX_VALUE)).find { picoSecond ->
-            fireWall.reset()
             passedThroughUncaught(fireWall, picoSecond)
         }
     }

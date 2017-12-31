@@ -10,8 +10,9 @@ class FireWallConstructorTest {
     fun `it should construct the firewall from the raw input`() {
         val constructor = FireWallConstructor()
         val fireWall = constructor.buildFireWallFromRawInstructions("/day13/day13.txt")
-        assertThat(fireWall.iterator().next().depth, equalTo(0))
-        assertThat(fireWall.iterator().next().range, equalTo(2))
-        assertThat(fireWall.iterator().next().range, equalTo(4))
+        val iterator = fireWall.iterator()
+        assertThat(iterator.next().depth, equalTo(0))
+        assertThat(iterator.next().range, equalTo(2))
+        assertThat(iterator.next().range, equalTo(4))
     }
 }
